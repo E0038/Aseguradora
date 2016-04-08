@@ -37,6 +37,7 @@
       <Label layoutX="279.0" layoutY="110.0" text="Nº: ">
          <font>
             <Font size="18.0" />
+
          </font>
       </Label>
       <TextField fx:id="txtNumCarrer" layoutX="309.0" layoutY="111.0" prefHeight="25.0" prefWidth="36.0" />
