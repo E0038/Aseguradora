@@ -16,12 +16,6 @@ import javax.persistence.*;
  * Cerca de pòlisses vigents.
  */
 @PersistenceContext
-@NamedQueries({
-        @NamedQuery(name = "findClientByName", query = "SELECT C FROM Client C WHERE  C.nom = :name")
-        , @NamedQuery(name = "findPolisseByClient", query = "SELECT P FROM Polissa P WHERE P.prenedor = :client ")
-        , @NamedQuery(name = "findPolisseByVeicle", query = "SELECT P FROM Polissa P WHERE P.vehicle = :vehicle")
-        , @NamedQuery(name = "findPolissesVigents", query = "SELECT P FROM Polissa P WHERE P.dataFi > current_date ")
-})
 public class DbManager {
     public static final int EXTERNAL_PORT = 8081, LOCAL_PORT = 1521;
     private static DbManager ourInstance = new DbManager();
@@ -79,19 +73,11 @@ public class DbManager {
         }
     }
 
+
     public void delete(IModelMarker obj) throws PersistanceExeception {
         entityGuard(obj);
         try {
             entityManager.remove(obj);
-        } catch (Exception e) {
-            throw new PersistanceExeception(e.getMessage());
-        }
-    }
-
-    public Object findById(IModelMarker obj) throws PersistanceExeception {
-        entityGuard(obj);
-        try {
-            return entityManager.find(obj.getClass(), obj);
         } catch (Exception e) {
             throw new PersistanceExeception(e.getMessage());
         }

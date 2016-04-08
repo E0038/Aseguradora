@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<VBox prefHeight="449.0" prefWidth="707.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.e38.m6.aseguradora.control.FxControler">
-    <MenuBar>
-        <Menu mnemonicParsing="false" text="Help">
-            <MenuItem mnemonicParsing="false" text="About"/>
-        </Menu>
-    </MenuBar>
-    <BorderPane prefHeight="58.0" prefWidth="587.0">
-        <right>
-            <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                <Label text="source" textAlignment="JUSTIFY" wrapText="true">
-                    <padding>
-                        <Insets right="20.0"/>
-                    </padding>
-                    <FlowPane.margin>
-                        <Insets right="20.0"/>
-                    </FlowPane.margin>
-                </Label>
-                <ComboBox prefWidth="150.0"/>
-            </FlowPane>
-        </right>
-    </BorderPane>
-    <ScrollPane prefHeight="311.0" prefWidth="707.0"/>
+
+<VBox fx:id="root" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FxControler">
+   <children>
+       <MenuBar>
+          <menus>
+            <Menu mnemonicParsing="false" text="Identificarse">
+              <items>
+                <MenuItem fx:id="itemLogin" mnemonicParsing="false" text="Log in" />
+                  <MenuItem fx:id="itemRegister" mnemonicParsing="false" text="Register" />
+              </items>
+            </Menu>
+              <Menu mnemonicParsing="false" text="Help">
+                 <items>
+                     <MenuItem mnemonicParsing="false" text="About" />
+                 </items>
+              </Menu>
+          </menus>
+       </MenuBar>
+       <BorderPane prefHeight="58.0" prefWidth="587.0">
+           <right>
+               <FlowPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <children>
+                      <Label text="source" textAlignment="JUSTIFY" wrapText="true">
+                          <padding>
+                              <Insets right="20.0" />
+                          </padding>
+                          <FlowPane.margin>
+                              <Insets right="20.0" />
+                          </FlowPane.margin>
+                      </Label>
+                      <ComboBox fx:id="comboSouce" prefWidth="150.0" />
+                  </children>
+               </FlowPane>
+           </right>
+       </BorderPane>
+       <ScrollPane prefHeight="300.0" prefWidth="700.0" />
+   </children>
 </VBox>

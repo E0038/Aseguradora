@@ -17,10 +17,11 @@ import java.io.Serializable;
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
 @Table(name = "VEICLES", indexes = {@Index(name = "idx_matricula", columnList = Vehicle.MATRICULA_COLUMN)})
-// TODO: 4/7/16
+@NamedQuery(name = Vehicle.VEICLE_BY_MATRICULA,query = "SELECT V FROM Vehicle V WHERE V.matricula = :matricula")
 public class Vehicle implements IModelMarker, Serializable {
 
     public static final String MATRICULA_COLUMN = "matricula";
+    public static final String VEICLE_BY_MATRICULA = "VeicleByMatricula";
     @SuppressWarnings("DuplicateStringLiteralInspection")
     @SequenceGenerator(name = "veicle_seq", sequenceName = "seq_veicle")
     @GeneratedValue(generator = "veicle_seq", strategy = GenerationType.SEQUENCE)

@@ -40,7 +40,7 @@ public class RegisterDialog extends LoginDialog {
                     getLoginButton().setDisable(newValue.length() < 8);
                 });
         mail.textProperty().addListener((observable, oldValue, newValue) -> {
-            boolean chReg = newValue.matches("\\w+[@]\\w+[.][\\w]{2,10}");
+            boolean chReg = newValue.matches("[\\w.]+[@][\\w.]+[.][\\w]{2,10}");
             getLoginButton().setDisable(!chReg);
             // TODO: 4/7/16 red labels inidicators
 

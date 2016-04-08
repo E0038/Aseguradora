@@ -10,8 +10,10 @@ import java.io.Serializable;
  * ◦ adreca, de tipus Adreca. Aquest atribut estarà incrustat en aquesta Entity.
  */
 @Entity
+@NamedQuery(name = Client.FIND_CLIENT_BY_NAME, query = "SELECT C FROM Client C WHERE  C.nom = :name")
 public class Client implements IModelMarker,Serializable {
 
+    public static final String FIND_CLIENT_BY_NAME = "findClientByName";
     @SuppressWarnings("DuplicateStringLiteralInspection")
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)

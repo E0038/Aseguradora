@@ -34,10 +34,9 @@ public class ManagerApplication extends Application {
     }
 
     private static void configure(Stage primaryStage, FXMLLoader loader) {
-        primaryStage.getScene().getStylesheets().add("/org/e38/m6/aseguradora/recurses/style/FXManager.css");
+        primaryStage.getScene().getStylesheets().add("/org/e38/m6/aseguradora/recurses/style/fx/FXManager.css");
         primaryStage.setIconified(true);
 //        primaryStage.getIcons().add(new Image("/org/e38/m6/aseguradora/recurses/img/icon.png"));
-
         FxControler controller = loader.getController();
         primaryStage.setOnCloseRequest(controller::onCloseResquest);
         primaryStage.centerOnScreen();

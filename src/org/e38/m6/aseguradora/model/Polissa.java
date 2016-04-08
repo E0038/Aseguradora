@@ -10,12 +10,20 @@ import java.util.List;
  */
 @Entity
 @Table(indexes = {@Index(name = "idx_prenedor", columnList = "prenedor")})
+@NamedQueries(
+        {@NamedQuery(name = Polissa.POLISSA_VIGENTS, query = "SELECT P FROM Polissa P WHERE P.dataFi > current_date ")
+                , @NamedQuery(name = Polissa.POLISSE_BY_CLIENT, query = "SELECT P FROM Polissa P WHERE P.prenedor = :client ")
+                , @NamedQuery(name = Polissa.POLISSA_BY_VEICLE, query = "SELECT P FROM Polissa P WHERE P.vehicle = :vehicle")
+        })
 public class Polissa implements IModelMarker, Serializable {
+    public static final String POLISSA_VIGENTS = "PolissaVigents";
+    public static final String POLISSE_BY_CLIENT = "PolisseByClient";
+    public static final String POLISSA_BY_VEICLE = "PolissaByVeicle";
     @Id
     @SequenceGenerator(name = "polissa_seq", sequenceName = "seq_polissa")
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "polissa_seq")
     private Long id;
-    @Column(length = 10)
+    @Column(length = 10, unique = true)
     private String polisaNum;
     @OneToOne
     @Column(nullable = false)
