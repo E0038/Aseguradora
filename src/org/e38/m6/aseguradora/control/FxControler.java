@@ -3,6 +3,7 @@ package org.e38.m6.aseguradora.control;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.stage.WindowEvent;
 import org.e38.m6.aseguradora.persistance.DbManager;
 
@@ -21,9 +22,14 @@ public class FxControler extends CommonControler implements Initializable {
     private static final String KEY_CLIENT = "CLIENT";
     private static final String KEY_ASSEGGURADORA = "ASSEGGURADORA";
 
-
+    private CommonControler commonControler = new CommonControler();
     private FXMLLoader loader = new FXMLLoader();
     private Map<String, URL> includePanels = new HashMap<>();
+    private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
+
+    public CommonControler getCommonControler() {
+        return commonControler;
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -38,7 +44,7 @@ public class FxControler extends CommonControler implements Initializable {
     }
 
     private void configure() {
-
+        errorAlerter.setTitle("ERROR");
     }
 
     private void installDb() {
@@ -57,5 +63,10 @@ public class FxControler extends CommonControler implements Initializable {
     @Override
     public void register(String username, String mail, String password) throws InvalidCredencialsException {
 
+    }
+
+    public void showError(String msg) {
+        errorAlerter.setContentText(msg);
+        errorAlerter.showAndWait();
     }
 }
