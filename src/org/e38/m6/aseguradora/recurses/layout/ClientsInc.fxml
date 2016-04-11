@@ -40,8 +40,8 @@
     <TextField fx:id="txtPoblacio" layoutX="170.0" layoutY="144.0" prefHeight="25.0" prefWidth="178.0"/>
     <Button fx:id="btnInsertarClient" layoutX="118.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
             prefWidth="104.0" text="Insertar"/>
-    <Button fx:id="btnModificarClient" layoutX="242.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
-            prefWidth="104.0" text="Modificar"/>
+    <Button fx:id="btnEliminarClient" layoutX="242.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+            prefWidth="104.0" text="Eliminar"/>
     <Button fx:id="btnCercarClient" layoutX="479.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
             prefWidth="104.0" text="Cercar per Nom"/>
     <TableView fx:id="tableClients" layoutX="390.0" layoutY="10.0" prefHeight="200.0" prefWidth="294.0">

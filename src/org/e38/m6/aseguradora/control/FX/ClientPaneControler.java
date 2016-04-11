@@ -3,14 +3,13 @@ package org.e38.m6.aseguradora.control.FX;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Adreca;
 import org.e38.m6.aseguradora.model.Client;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 /**
@@ -30,27 +29,42 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     @FXML
     private Button btnInsertarClient;
     @FXML
-    private Button btnModificarClient;
+    private Button btnEliminarClient;
     @FXML
     private Button btnCercarClient;
     @FXML
     private TableView tableClients;
 
     private FxControler fxControler;
+    private TextInputDialog seachInput;
 
 
     @Override
     public void eliminar(ActionEvent actionEvent) {
-
+        if (!fxControler.getCommonControler().delete(getInputClient()))
+            fxControler.showError("No se pudo eliminar el cliente");
     }
 
     @Override
     public void search(ActionEvent actionEvent) {
+        Optional<String> result = seachInput.showAndWait();
+        result.ifPresent(this::fillTableViewWithName);
+    }
+
+    private void fillTableViewWithName(String name) {
+        Client client =fxControler.getCommonControler().findByClientName(name);
 
     }
 
     @Override
     public void inserir(ActionEvent actionEvent) {
+        Client client = getInputClient();
+        if (!fxControler.getCommonControler().insert(client)) {
+            fxControler.showError("No se pudo insertar el cliente");
+        }
+    }
+
+    private Client getInputClient() {
         String nif = txtNif.getText(), nom = txtNom.getText(),
                 carre = txtCarrer.getText(), numCarrer = txtNumCarrer.getText(),
                 poblacio = txtPoblacio.getText();
@@ -60,98 +74,20 @@ public class ClientPaneControler implements Initializable, IPaneControler {
                         .setCarrer(carre)
                         .setNumero(Integer.valueOf(numCarrer))
                         .setPoblacio(poblacio));
-        if (!fxControler.getCommonControler().insert(client)) {
-            fxControler.showError("No se pudo insertar el cliente");
-        }
+        return client;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         btnInsertarClient.setOnAction(this::inserir);
-        btnModificarClient.setOnAction(this::eliminar);
+        btnEliminarClient.setOnAction(this::eliminar);
         btnCercarClient.setOnAction(this::search);
-    }
 
+        seachInput = new TextInputDialog("");
+        seachInput.setTitle("Search Clients");
+        seachInput.setHeaderText("Introduce client name: ");
+        seachInput.setContentText("Enter your name client:");
 
-    public TextField getTxtNif() {
-        return txtNif;
-    }
-
-    public ClientPaneControler setTxtNif(TextField txtNif) {
-        this.txtNif = txtNif;
-        return this;
-    }
-
-    public TextField getTxtNom() {
-        return txtNom;
-    }
-
-    public ClientPaneControler setTxtNom(TextField txtNom) {
-        this.txtNom = txtNom;
-        return this;
-    }
-
-    public TextField getTxtCarrer() {
-        return txtCarrer;
-    }
-
-    public ClientPaneControler setTxtCarrer(TextField txtCarrer) {
-        this.txtCarrer = txtCarrer;
-        return this;
-    }
-
-    public TextField getTxtNumCarrer() {
-        return txtNumCarrer;
-    }
-
-    public ClientPaneControler setTxtNumCarrer(TextField txtNumCarrer) {
-        this.txtNumCarrer = txtNumCarrer;
-        return this;
-    }
-
-    public TextField getTxtPoblacio() {
-        return txtPoblacio;
-    }
-
-    public ClientPaneControler setTxtPoblacio(TextField txtPoblacio) {
-        this.txtPoblacio = txtPoblacio;
-        return this;
-    }
-
-    public Button getBtnInsertarClient() {
-        return btnInsertarClient;
-    }
-
-    public ClientPaneControler setBtnInsertarClient(Button btnInsertarClient) {
-        this.btnInsertarClient = btnInsertarClient;
-        return this;
-    }
-
-    public Button getBtnModificarClient() {
-        return btnModificarClient;
-    }
-
-    public ClientPaneControler setBtnModificarClient(Button btnModificarClient) {
-        this.btnModificarClient = btnModificarClient;
-        return this;
-    }
-
-    public Button getBtnCercarClient() {
-        return btnCercarClient;
-    }
-
-    public ClientPaneControler setBtnCercarClient(Button btnCercarClient) {
-        this.btnCercarClient = btnCercarClient;
-        return this;
-    }
-
-    public TableView getTableClients() {
-        return tableClients;
-    }
-
-    public ClientPaneControler setTableClients(TableView tableClients) {
-        this.tableClients = tableClients;
-        return this;
     }
 
     public FxControler getFxControler() {
@@ -163,5 +99,12 @@ public class ClientPaneControler implements Initializable, IPaneControler {
         return this;
     }
 
+    public TableView getTableClients() {
+        return tableClients;
+    }
 
+    public ClientPaneControler setTableClients(TableView tableClients) {
+        this.tableClients = tableClients;
+        return this;
+    }
 }
