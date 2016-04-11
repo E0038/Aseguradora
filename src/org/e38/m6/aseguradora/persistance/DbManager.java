@@ -3,6 +3,7 @@ package org.e38.m6.aseguradora.persistance;
 import org.e38.m6.aseguradora.model.IModelMarker;
 
 import javax.persistence.*;
+import java.util.Map;
 
 
 /**
@@ -86,4 +87,9 @@ public class DbManager {
         }
     }
 
+    public void reconfigure(Map<String, Object> propeties) {
+        for (String key : propeties.keySet()) {
+            entityManager.setProperty(key, propeties.get(key));
+        }
+    }
 }

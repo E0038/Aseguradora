@@ -12,6 +12,10 @@ import org.e38.m6.aseguradora.control.FxControler;
  */
 public class ManagerApplication extends Application {
 
+    public static void caller(String[] args) {
+        launch(args);
+    }
+
     public static final String ASSEGURADORA_MANAGER_TITLE = "Asseguradora Manager";
 
     @Override

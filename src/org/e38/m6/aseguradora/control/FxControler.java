@@ -1,16 +1,24 @@
 package org.e38.m6.aseguradora.control;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
 import org.e38.m6.aseguradora.persistance.DbManager;
+import org.e38.m6.aseguradora.view.fx.LoginDialog;
+import org.e38.m6.aseguradora.view.fx.RegisterDialog;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
+import static org.e38.m6.aseguradora.view.fx.RegisterDialog.*;
 
 /**
  * Created by sergi on 4/6/16.
@@ -21,15 +29,15 @@ public class FxControler extends CommonControler implements Initializable {
     private static final String KEY_VEHICLE = "VEHICLE";
     private static final String KEY_CLIENT = "CLIENT";
     private static final String KEY_ASSEGGURADORA = "ASSEGGURADORA";
+    public MenuItem itemLogin;
+    public MenuItem itemRegister;
+    public ComboBox comboSouce;
+    public VBox root;
 
-    private CommonControler commonControler = new CommonControler();
     private FXMLLoader loader = new FXMLLoader();
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
 
-    public CommonControler getCommonControler() {
-        return commonControler;
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -55,18 +63,29 @@ public class FxControler extends CommonControler implements Initializable {
         Platform.exit();
     }
 
-    @Override
-    public void login(String user, String password) throws UserNotFoundException, InvalidCredencialsException {
-
-    }
-
-    @Override
-    public void register(String username, String mail, String password) throws InvalidCredencialsException {
-
-    }
 
     public void showError(String msg) {
         errorAlerter.setContentText(msg);
         errorAlerter.showAndWait();
+    }
+
+    public void registerAction(ActionEvent actionEvent) {
+        new RegisterDialog().showAndWait().ifPresent(regMap -> {
+            try {
+                register(regMap.get(KEY_USERNAME), regMap.get(KEY_MAIL), regMap.get(KEY_PASSWORD));
+            } catch (InvalidCredencialsException e) {
+                showError(e.getMessage());
+            }
+        });
+    }
+
+    public void loginAction(ActionEvent actionEvent) {
+        new LoginDialog().showAndWait().ifPresent(logMap -> {
+            try {
+                login(logMap.get(KEY_USERNAME), logMap.get(KEY_PASSWORD));
+            } catch (UserNotFoundException | InvalidCredencialsException e) {
+                showError("contraseña o usario incorrecto");
+            }
+        });
     }
 }

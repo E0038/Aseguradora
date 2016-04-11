@@ -9,7 +9,7 @@ import java.util.List;
  * Created by sergi on 4/6/16.
  */
 @Entity
-@Table(indexes = {@Index(name = "idx_prenedor", columnList = "prenedor")})
+@Table(indexes = {@Index(name = "idx_prenedor", columnList = Polissa.PRENADOR_ID, unique = true)})
 @NamedQueries(
         {@NamedQuery(name = Polissa.POLISSA_VIGENTS, query = "SELECT P FROM Polissa P WHERE P.dataFi > current_date ")
                 , @NamedQuery(name = Polissa.POLISSE_BY_CLIENT, query = "SELECT P FROM Polissa P WHERE P.prenedor = :client ")
@@ -19,17 +19,19 @@ public class Polissa implements IModelMarker, Serializable {
     public static final String POLISSA_VIGENTS = "PolissaVigents";
     public static final String POLISSE_BY_CLIENT = "PolisseByClient";
     public static final String POLISSA_BY_VEICLE = "PolissaByVeicle";
+    public static final String POLISSA_SEQ = "polissa_seq";
+    public static final String PRENADOR_ID = "prenador_id";
     @Id
-    @SequenceGenerator(name = "polissa_seq", sequenceName = "seq_polissa")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "polissa_seq")
+    @SequenceGenerator(name = POLISSA_SEQ, sequenceName = "seq_polissa")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = POLISSA_SEQ)
     private Long id;
     @Column(length = 10, unique = true)
     private String polisaNum;
     @OneToOne
-    @Column(nullable = false)
+    @JoinColumn(name = PRENADOR_ID, nullable = false)
     private Client prenedor;
-    @Column(nullable = false)
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
     private Vehicle vehicle;
     @Column(nullable = false)
     private Calendar dataInici;
