@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class RegisterDialog extends LoginDialog {
     public static final String KEY_MAIL = "MAIL";
+    public static final int PASSWORD_MIN_LENGTH = 8;
     private TextField mail;
 
 
@@ -37,7 +38,7 @@ public class RegisterDialog extends LoginDialog {
 //        getLoginButton().disableProperty().bind(getPassword().textProperty().length().lessThan(8));
         getPassword().textProperty()
                 .addListener((observable, oldValue, newValue) -> {
-                    getLoginButton().setDisable(newValue.length() < 8);
+                    getLoginButton().setDisable(newValue.length() < PASSWORD_MIN_LENGTH);
                 });
         mail.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean chReg = newValue.matches("[\\w.]+[@][\\w.]+[.][\\w]{2,10}");

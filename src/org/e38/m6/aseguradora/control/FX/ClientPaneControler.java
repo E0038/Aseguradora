@@ -1,5 +1,7 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -37,11 +39,12 @@ public class ClientPaneControler implements Initializable, IPaneControler {
 
     private FxControler fxControler;
     private TextInputDialog seachInput;
+    private ObservableList<Client> displayClients;
 
 
     @Override
     public void eliminar(ActionEvent actionEvent) {
-        if (!fxControler.getCommonControler().delete(getInputClient()))
+        if (!fxControler.delete(getInputClient()))
             fxControler.showError("No se pudo eliminar el cliente");
     }
 
@@ -52,14 +55,14 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     }
 
     private void fillTableViewWithName(String name) {
-        Client client =fxControler.getCommonControler().findByClientName(name);
+        Client client = fxControler.findByClientName(name);
 
     }
 
     @Override
     public void inserir(ActionEvent actionEvent) {
         Client client = getInputClient();
-        if (!fxControler.getCommonControler().insert(client)) {
+        if (!fxControler.insert(client)) {
             fxControler.showError("No se pudo insertar el cliente");
         }
     }
@@ -79,6 +82,8 @@ public class ClientPaneControler implements Initializable, IPaneControler {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+
         btnInsertarClient.setOnAction(this::inserir);
         btnEliminarClient.setOnAction(this::eliminar);
         btnCercarClient.setOnAction(this::search);
@@ -88,6 +93,7 @@ public class ClientPaneControler implements Initializable, IPaneControler {
         seachInput.setHeaderText("Introduce client name: ");
         seachInput.setContentText("Enter your name client:");
 
+        displayClients = FXCollections.observableArrayList();
     }
 
     public FxControler getFxControler() {

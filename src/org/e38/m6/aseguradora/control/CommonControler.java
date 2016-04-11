@@ -26,11 +26,18 @@ public class CommonControler implements IManagerControler {
 
     @Override
     public void login(String user, String password) throws UserNotFoundException, InvalidCredencialsException {
+        if (!checkInputStrings(user, password))
+            throw new InvalidCredencialsException("the input contains invalid words");
+        password = encript(password);
         Usuari usuari = new Usuari().setName(user).setPassword(password);
-        Usuari dbUser = dbManager.getEntityManager().find(Usuari.class, usuari);
+        Usuari dbUser = dbManager.getEntityManager().find(Usuari.class, user);
         if (dbUser == null) throw new UserNotFoundException("usario no encontrado");
         else if (!usuari.getPassword().equals(dbUser.getPassword()))
             throw new InvalidCredencialsException("password not match");
+    }
+
+    private String encript(String password) {
+        return password;
     }
 
     @Override
@@ -38,7 +45,7 @@ public class CommonControler implements IManagerControler {
         if (!checkInputStrings(username, password))
             throw new InvalidCredencialsException("the input contains invalid words");
         if (password.length() < MIN_PASSWORD_LENGTH || !mail.matches(MAIL_REG)) {
-            throw new InvalidCredencialsException("check data rules ");
+            throw new InvalidCredencialsException("data rules violation");
         } else if (dbManager.getEntityManager()
                 .createQuery("select U from Usuari U WHERE U.name = ?1", Usuari.class)
                 .setParameter(1, username).getResultList().size()

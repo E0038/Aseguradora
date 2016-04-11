@@ -48,7 +48,7 @@ public class Launcher {
                 case ARG_FX:
                     lauched = true;
                     List<String> extras = argsv.subList(i, argsv.size());
-                    ManagerApplication.launch(extras.toArray(new String[argsv.size()]));
+                    ManagerApplication.caller(extras.toArray(new String[argsv.size()]));
                     break;
                 case ARG_PORT:
                     lauched = true;
@@ -62,6 +62,6 @@ public class Launcher {
                     break;
             }
         }
-        if (!lauched) ManagerApplication.launch();
+        if (!lauched) ManagerApplication.caller(argsv.toArray(new String[argsv.size()]));
     }
 }

@@ -16,7 +16,7 @@ import java.io.Serializable;
  */
 @SuppressWarnings("JpaDataSourceORMInspection")
 @Entity
-@Table(name = "VEICLES", indexes = {@Index(name = "idx_matricula", columnList = Vehicle.MATRICULA_COLUMN)})
+@Table(name = "VEHICLES", indexes = {@Index(name = "idx_matricula", columnList = Vehicle.MATRICULA_COLUMN)})
 @NamedQuery(name = Vehicle.VEICLE_BY_MATRICULA,query = "SELECT V FROM Vehicle V WHERE V.matricula = :matricula")
 public class Vehicle implements IModelMarker, Serializable {
 
