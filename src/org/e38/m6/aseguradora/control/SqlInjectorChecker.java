@@ -1,44 +1,38 @@
 package org.e38.m6.aseguradora.control;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author sergi
  */
 public class SqlInjectorChecker {
 
-    private static final String[] INVALID_TEXTS = {
-        "WHILE", "SELECT", "INSERT", "DELETE", "DROP", "=", "'",//to not break varchars
-        "CREATE", "EXEC", ";", "\""//, "@", "&", "#", "|", "+", ".", "(", ")"
-    };
+    private static final List<String> INVALID_TEXTS = Arrays.asList(
+            "WHILE", "SELECT", "INSERT", "DELETE", "DROP", "=", "'",//to not break varchars
+            "CREATE", "EXEC", ";", "\""//, "@", "&", "#", "|", "+", ".", "(", ")"
+    );
 
-    /**
-     *
-     *
-     * @param s
-     * @return true if valid input.
-     */
-    public static boolean checkInputSentence(String s) {
-        if (!(s.matches("([\\w]*[\\s]*)*"))) {//only alphanumeric words
-            return false;
-        }
-        s = s.toUpperCase();
+    public static boolean checkInputStrings(String... strings) {
         boolean ck = true;
-        for (String invalidText : INVALID_TEXTS) {
-            if (s.contains(invalidText)) {
-                ck = false;
+        for (String s : strings) {
+            ck = checkInputSentence(s);
+            if (!ck) {
                 break;
             }
         }
         return ck;
     }
 
-    public static boolean checkInputStrings(String... strings) {
-        boolean ck = true;
-        for (String s : strings) {
-            ck = checkInputSentence(s) && s.length() <= 20;
-            if (!ck) {
-                break;
-            }
+    /**
+     * @param s
+     * @return true if valid input.
+     */
+    public static boolean checkInputSentence(String s) {
+        if (!s.matches("([\\w]*[\\s]*)*")) {//only alphanumeric words
+            return false;
         }
-        return ck;
+        s = s.toUpperCase();
+        return !INVALID_TEXTS.contains(s);
     }
 }

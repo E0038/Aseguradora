@@ -1,55 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
+
 <?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
-<?import javax.swing.JPanel?>
-<?import javafx.scene.Node?>
-<?import javafx.embed.swing.SwingNode?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.*?>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0"
+      prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.e38.m6.aseguradora.control.FX.ClientPaneControler">
+    <TextField fx:id="txtNif" layoutX="170.0" layoutY="45.0" prefHeight="25.0" prefWidth="178.0"/>
+    <TextField fx:id="txtNom" layoutX="170.0" layoutY="79.0" prefHeight="25.0" prefWidth="178.0"/>
+    <Label layoutX="93.0" layoutY="44.0" text="NIF: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Label layoutX="93.0" layoutY="78.0" text="Nom: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Label layoutX="93.0" layoutY="110.0" text="Carrer: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <Label layoutX="93.0" layoutY="143.0" text="Població: ">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="txtCarrer" layoutX="171.0" layoutY="111.0" prefHeight="25.0" prefWidth="96.0"/>
+    <Label layoutX="279.0" layoutY="110.0" text="Nº: ">
+        <font>
+            <Font size="18.0"/>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <TextField fx:id="txtNif" layoutX="170.0" layoutY="45.0" prefHeight="25.0" prefWidth="178.0" />
-      <TextField fx:id="txtNom" layoutX="170.0" layoutY="79.0" prefHeight="25.0" prefWidth="178.0" />
-      <Label layoutX="93.0" layoutY="44.0" text="NIF: ">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="93.0" layoutY="78.0" text="Nom: ">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="93.0" layoutY="110.0" text="Carrer: ">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="93.0" layoutY="143.0" text="Població: ">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <TextField fx:id="txtCarrer" layoutX="171.0" layoutY="111.0" prefHeight="25.0" prefWidth="96.0" />
-      <Label layoutX="279.0" layoutY="110.0" text="Nº: ">
-         <font>
-            <Font size="18.0" />
-
-         </font>
-      </Label>
-      <TextField fx:id="txtNumCarrer" layoutX="309.0" layoutY="111.0" prefHeight="25.0" prefWidth="36.0" />
-      <TextField fx:id="txtPoblacio" layoutX="170.0" layoutY="144.0" prefHeight="25.0" prefWidth="178.0" />
-      <Button fx:id="btnInsertarClient" layoutX="118.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Insertar" />
-      <Button fx:id="btnModificarClient" layoutX="242.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Modificar" />
-      <Button fx:id="btnCercarClient" layoutX="479.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="104.0" text="Cercar per Nom" />
-      <TableView fx:id="tableClients" layoutX="390.0" layoutY="10.0" prefHeight="200.0" prefWidth="294.0">
+        </font>
+    </Label>
+    <TextField fx:id="txtNumCarrer" layoutX="309.0" layoutY="111.0" prefHeight="25.0" prefWidth="36.0"/>
+    <TextField fx:id="txtPoblacio" layoutX="170.0" layoutY="144.0" prefHeight="25.0" prefWidth="178.0"/>
+    <Button fx:id="btnInsertarClient" layoutX="118.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+            prefWidth="104.0" text="Insertar"/>
+    <Button fx:id="btnModificarClient" layoutX="242.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+            prefWidth="104.0" text="Modificar"/>
+    <Button fx:id="btnCercarClient" layoutX="479.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
+            prefWidth="104.0" text="Cercar per Nom"/>
+    <TableView fx:id="tableClients" layoutX="390.0" layoutY="10.0" prefHeight="200.0" prefWidth="294.0">
         <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
+            <TableColumn prefWidth="75.0" text="C1"/>
+            <TableColumn prefWidth="75.0" text="C2"/>
         </columns>
-      </TableView>
-   </children>
+    </TableView>
 </Pane>

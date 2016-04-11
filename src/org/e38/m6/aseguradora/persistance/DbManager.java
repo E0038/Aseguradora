@@ -48,6 +48,9 @@ public class DbManager {
     }
 
     public void prepareEnv() {
+//        entityManager.setProperty();//todo set mode drop-create
+//        // TODO: 4/11/16 create mock instances
+//        entityManager.setProperty();// TODO: 4/11/16 set mode update
     }
 
     public void insert(IModelMarker obj) throws PersistanceExeception {

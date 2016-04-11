@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 /**
  * Created by sergi on 4/6/16.
  */
-public class FxControler extends CommonControler implements Initializable{
+public class FxControler extends CommonControler implements Initializable {
     private static final String KEY_USUARI = "USUARI";
     private static final String KEY_POLISA = "POLISA";
     private static final String KEY_VEHICLE = "VEHICLE";
@@ -32,7 +32,6 @@ public class FxControler extends CommonControler implements Initializable{
     }
 
     private void mapIncludes() {
-        includePanels.put(KEY_USUARI, getClass().getResource("/org/e38/m6/aseguradora/recurses/layout/UsuarisInc.fxml"));
         includePanels.put(KEY_CLIENT, getClass().getResource("/org/e38/m6/aseguradora/recurses/layout/ClientsInc.fxml"));
         includePanels.put(KEY_POLISA, getClass().getResource("/org/e38/m6/aseguradora/recurses/layout/PolissesInc.fxml"));
         includePanels.put(KEY_VEHICLE, getClass().getResource("/org/e38/m6/aseguradora/recurses/layout/VehiclesInc.fxml"));
