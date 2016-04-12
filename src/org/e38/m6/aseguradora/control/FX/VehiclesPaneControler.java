@@ -133,10 +133,24 @@ public class VehiclesPaneControler implements Initializable, IPaneControler {
             tableVehiclesClients.getColumns().addAll(nif, nom);
 
             q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
-            tableVehiclesClients.getItems().addAll(q.getResultList());
-            tableVehiclesClients.refresh();
+            if (!q.getResultList().isEmpty()){
+                tableVehiclesClients.getItems().addAll(q.getResultList());
+                tableVehiclesClients.refresh();
+            }else{
+                fx.showError("No hay clientes insertados");
+            }
+
 
         } else if (radioVehicle.isSelected()) {
+            TableColumn matricula = new TableColumn("Matricula");
+            TableColumn marca = new TableColumn("Marca y model");
+            TableColumn any = new TableColumn("Any fabricació");
+            TableColumn mar = new TableColumn("Marca y model");
+
+
+            tableVehiclesClients.getColumns().clear();
+            tableVehiclesClients.getColumns().addAll(matricula, marca);
+
             q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
 
         }
