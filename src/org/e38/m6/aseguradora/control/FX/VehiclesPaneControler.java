@@ -65,12 +65,13 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
 
     @Override
     public FxControler getFxControler() {
-        return null;
+        return fx;
     }
 
     @Override
     public PanelControler setFxControler(FxControler fxControler) {
-        return null;
+        fx = fxControler;
+        return this;
     }
 
     public void findVehicle(ActionEvent actionEvent) {
