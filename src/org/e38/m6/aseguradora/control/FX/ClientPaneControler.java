@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Adreca;
 import org.e38.m6.aseguradora.model.Client;
@@ -18,6 +19,11 @@ import java.util.ResourceBundle;
  * Created by sergi on 4/8/16.
  */
 public class ClientPaneControler implements Initializable, IPaneControler {
+    public TableColumn col_nif;
+    public TableColumn col_nom;
+    public TableColumn col_carre;
+    public TableColumn col_numero;
+    public TableColumn col_poblacio;
     @FXML
     private TextField txtNif;
     @FXML
@@ -35,7 +41,7 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     @FXML
     private Button btnCercarClient;
     @FXML
-    private TableView tableClients;
+    private TableView<Client> tableClients;
 
     private FxControler fxControler;
     private TextInputDialog seachInput;
@@ -52,11 +58,6 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     public void search(ActionEvent actionEvent) {
         Optional<String> result = seachInput.showAndWait();
         result.ifPresent(this::fillTableViewWithName);
-    }
-
-    private void fillTableViewWithName(String name) {
-        Client client = fxControler.findByClientName(name);
-
     }
 
     @Override
@@ -80,12 +81,14 @@ public class ClientPaneControler implements Initializable, IPaneControler {
         return client;
     }
 
+    private void fillTableViewWithName(String name) {
+        Client client = fxControler.findByClientName(name);
+
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
         configure();
-
     }
 
     private void configure() {
@@ -103,7 +106,11 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     }
 
     private void configureTable() {
-
+        tableClients.setEditable(false);
+//        col_nif.setCellFactory(new Callback<TableColumn, TableCell>() {
+//
+//        });
+        tableClients.setItems(displayClients);
     }
 
     public FxControler getFxControler() {
@@ -115,11 +122,11 @@ public class ClientPaneControler implements Initializable, IPaneControler {
         return this;
     }
 
-    public TableView getTableClients() {
+    public TableView<Client> getTableClients() {
         return tableClients;
     }
 
-    public ClientPaneControler setTableClients(TableView tableClients) {
+    public ClientPaneControler setTableClients(TableView<Client> tableClients) {
         this.tableClients = tableClients;
         return this;
     }

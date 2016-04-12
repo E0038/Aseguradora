@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Client;
 import org.e38.m6.aseguradora.model.Vehicle;
-import org.e38.m6.aseguradora.persistance.DbManager;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,7 +18,10 @@ import java.util.ResourceBundle;
 /**
  * Created by sergi on 4/8/16.
  */
-public class VehiclesPaneControler implements Initializable,IPaneControler {
+public class VehiclesPaneControler implements Initializable, IPaneControler {
+    public ToggleGroup select;
+    public Button btnCercar;
+    FxControler fx;
     @FXML
     private TableView tableVehiclesClients;
     @FXML
@@ -40,8 +42,6 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
     private Button btnModificarVehicle;
     @FXML
     private Button btnInsertarVehicle;
-
-    FxControler fx;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,16 +64,16 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
     }
 
     public void findVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7){
+        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7) {
 
             fx.showError("La matrícula no està completa");
 
-        }else{
+        } else {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("RESOURCE_LOCAL");
             EntityManager em = emf.createEntityManager();
 
-            Query q = em.createQuery("SELECT p FROM Vehicle p WHERE p.matricula = '" + txtMatricula.getText() +"'");
-            Vehicle vehicle =  (Vehicle)q.getSingleResult();
+            Query q = em.createQuery("SELECT p FROM Vehicle p WHERE p.matricula = '" + txtMatricula.getText() + "'");
+            Vehicle vehicle = (Vehicle) q.getSingleResult();
 
             txtMarca.setText(vehicle.getMarcaModel());
             txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
@@ -85,36 +85,21 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
     public void updateVehicle(ActionEvent actionEvent) {
         if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7
                 || txtMarca.getText() == null || txtMarca.getText().isEmpty()
-                || txtAny.getText() == null ||txtAny.getText().isEmpty()
-                ||txtNif.getText() == null || txtNif.getText().length() > 9){
+                || txtAny.getText() == null || txtAny.getText().isEmpty()
+                || txtNif.getText() == null || txtNif.getText().length() > 9) {
 
             fx.showError("Faltan camps per omplir");
 
-        }else{
+        } else {
             Vehicle vehicle = createVehicleObject();
             fx.update(vehicle);
         }
     }
 
+    private Vehicle createVehicleObject() {
 
-    public void insertVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7
-                || txtMarca.getText() == null || txtMarca.getText().isEmpty()
-                || txtAny.getText() == null ||txtAny.getText().isEmpty()
-                ||txtNif.getText() == null || txtNif.getText().length() > 9){
-
-            fx.showError("Faltan camps per omplir");
-
-        }else{
-            Vehicle vehicle = createVehicleObject();
-            fx.insert(vehicle);
-        }
-    }
-
-    private Vehicle createVehicleObject(){
-
-        Query q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Client p WHERE p.nif = '" + txtNif.getText() +"'");
-        Client client = (Client)q.getSingleResult();
+        Query q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Client p WHERE p.nif = '" + txtNif.getText() + "'");
+        Client client = (Client) q.getSingleResult();
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMatricula(txtMatricula.getText()).setMarcaModel(txtMarca.getText()).setMarcaModel(txtMarca.getText()
@@ -123,10 +108,25 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
         return vehicle;
     }
 
+    public void insertVehicle(ActionEvent actionEvent) {
+        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7
+                || txtMarca.getText() == null || txtMarca.getText().isEmpty()
+                || txtAny.getText() == null || txtAny.getText().isEmpty()
+                || txtNif.getText() == null || txtNif.getText().length() > 9) {
+
+            fx.showError("Faltan camps per omplir");
+
+        } else {
+            Vehicle vehicle = createVehicleObject();
+            fx.insert(vehicle);
+        }
+    }
+
+    @FXML
     private void fillTable(ActionEvent actionEvent) {
 
         Query q;
-        if (radioClients.isSelected()){
+        if (radioClients.isSelected()) {
             TableColumn nif = new TableColumn("NIF");
             TableColumn nom = new TableColumn("Nom");
             tableVehiclesClients.getColumns().clear();
@@ -136,7 +136,7 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
             tableVehiclesClients.getItems().addAll(q.getResultList());
             tableVehiclesClients.refresh();
 
-        }else if (radioVehicle.isSelected()){
+        } else if (radioVehicle.isSelected()) {
             q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
 
         }

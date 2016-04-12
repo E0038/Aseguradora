@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.*?>
@@ -46,8 +44,12 @@
             prefWidth="104.0" text="Cercar per Nom"/>
     <TableView fx:id="tableClients" layoutX="390.0" layoutY="10.0" prefHeight="200.0" prefWidth="294.0">
         <columns>
-            <TableColumn prefWidth="75.0" text="C1"/>
-            <TableColumn prefWidth="75.0" text="C2"/>
+            <!--<TableColumn prefWidth="75.0" text="ID" fx:id="col_id"/>-->
+            <TableColumn prefWidth="75.0" text="NIF" fx:id="col_nif"/>
+            <TableColumn prefWidth="75.0" text="nom Client" fx:id="col_nom"/>
+            <TableColumn prefWidth="75.0" text="Carrer" fx:id="col_carre"/>
+            <TableColumn prefWidth="75.0" text="Numero" fx:id="col_numero"/>
+            <TableColumn prefWidth="75.0" text="Poblacio" fx:id="col_poblacio"/>
         </columns>
     </TableView>
 </Pane>
