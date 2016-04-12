@@ -23,6 +23,9 @@ public class CommonControler implements IManagerControler {
     // TODO: 4/7/16 all
     private DbManager dbManager = DbManager.getInstance();
 
+    public DbManager getDbManager() {
+        return dbManager;
+    }
 
     @Override
     public void login(String user, String password) throws UserNotFoundException, InvalidCredencialsException {

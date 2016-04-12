@@ -84,6 +84,11 @@ public class ClientPaneControler implements Initializable, IPaneControler {
     public void initialize(URL location, ResourceBundle resources) {
 
 
+        configure();
+
+    }
+
+    private void configure() {
         btnInsertarClient.setOnAction(this::inserir);
         btnEliminarClient.setOnAction(this::eliminar);
         btnCercarClient.setOnAction(this::search);
@@ -94,6 +99,11 @@ public class ClientPaneControler implements Initializable, IPaneControler {
         seachInput.setContentText("Enter your name client:");
 
         displayClients = FXCollections.observableArrayList();
+        configureTable();
+    }
+
+    private void configureTable() {
+
     }
 
     public FxControler getFxControler() {

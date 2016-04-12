@@ -37,6 +37,7 @@ public class LoginDialog extends Dialog<Map<String, String>> {
 // Create the username and password labels and fields.
         GridPane grid = new GridPane();
         configureGrid(grid);
+        loginButton = getDialogPane().lookupButton(loginButtonType);
         configureValidation();
 
         getDialogPane().setContent(grid);
@@ -63,14 +64,7 @@ public class LoginDialog extends Dialog<Map<String, String>> {
     }
 
     protected void configureValidation() {
-        // Enable/Disable login button depending on whether a username was entered.
-        loginButton = getDialogPane().lookupButton(loginButtonType);
-        loginButton.setDisable(true);
-
-// Do some validation (using the Java 8 lambda syntax).
-        username.textProperty().addListener((observable, oldValue, newValue) -> {
-            loginButton.setDisable(newValue.trim().isEmpty());
-        });
+        loginButton.disableProperty().bind(username.textProperty().isEmpty().or(password.textProperty().isEmpty()));
     }
 
     protected Map<String, String> convertResult(ButtonType loginButtonType, ButtonType dialogButton) {
@@ -78,8 +72,10 @@ public class LoginDialog extends Dialog<Map<String, String>> {
             Map<String, String> result = new HashMap<>();
             result.put(KEY_USERNAME, username.getText());
             result.put(KEY_PASSWORD, password.getText());
+            setResult(result);
             return result;
         }
+        setResult(null);
         return null;
     }
 

@@ -10,7 +10,7 @@ public class SqlInjectorChecker {
 
     private static final List<String> INVALID_TEXTS = Arrays.asList(
             "WHILE", "SELECT", "INSERT", "DELETE", "DROP", "=", "'",//to not break varchars
-            "CREATE", "EXEC", ";", "\""//, "@", "&", "#", "|", "+", ".", "(", ")"
+            "CREATE", "EXEC", ";", "\"", "EXECUTE"//, "@", "&", "#", "|", "+", ".", "(", ")"
     );
 
     public static boolean checkInputStrings(String... strings) {
