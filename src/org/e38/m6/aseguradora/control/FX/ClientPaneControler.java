@@ -112,10 +112,12 @@ public class ClientPaneControler implements Initializable, PanelControler {
         tableClients.setItems(displayClients);
     }
 
+    @Override
     public FxControler getFxControler() {
         return fxControler;
     }
 
+    @Override
     public ClientPaneControler setFxControler(FxControler fxControler) {
         this.fxControler = fxControler;
         return this;

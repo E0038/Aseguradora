@@ -40,6 +40,7 @@ public class PolissesPaneControler implements Initializable,PanelControler {
     private Button btnCercarPolissaMatr;
     @FXML
     private Button btnCercarPolissaVig;
+    private FxControler fxControler;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,11 +65,11 @@ public class PolissesPaneControler implements Initializable,PanelControler {
 
     @Override
     public FxControler getFxControler() {
-        return null;
+        return fxControler;
     }
 
     @Override
     public PanelControler setFxControler(FxControler fxControler) {
-        return null;
+        return this;
     }
 }
