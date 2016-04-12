@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 /**
  * Created by sergi on 4/8/16.
  */
-public class VehiclesPaneControler implements Initializable, IPaneControler {
+public class VehiclesPaneControler implements Initializable, PanelControler {
     public ToggleGroup select;
     public Button btnCercar;
     FxControler fx;
@@ -61,6 +61,16 @@ public class VehiclesPaneControler implements Initializable, IPaneControler {
     @Override
     public void inserir(ActionEvent actionEvent) {
 
+    }
+
+    @Override
+    public FxControler getFxControler() {
+        return null;
+    }
+
+    @Override
+    public PanelControler setFxControler(FxControler fxControler) {
+        return null;
     }
 
     public void findVehicle(ActionEvent actionEvent) {

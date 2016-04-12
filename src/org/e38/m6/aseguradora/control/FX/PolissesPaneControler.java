@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
+import org.e38.m6.aseguradora.control.FxControler;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by sergi on 4/8/16.
  */
-public class PolissesPaneControler implements Initializable,IPaneControler {
+public class PolissesPaneControler implements Initializable,PanelControler {
     @FXML
     private TextField txtNumPolissa;
     @FXML
@@ -59,5 +60,15 @@ public class PolissesPaneControler implements Initializable,IPaneControler {
     @Override
     public void inserir(ActionEvent actionEvent) {
 
+    }
+
+    @Override
+    public FxControler getFxControler() {
+        return null;
+    }
+
+    @Override
+    public PanelControler setFxControler(FxControler fxControler) {
+        return null;
     }
 }

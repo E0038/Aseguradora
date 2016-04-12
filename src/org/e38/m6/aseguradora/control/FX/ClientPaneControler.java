@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Adreca;
 import org.e38.m6.aseguradora.model.Client;
@@ -18,7 +17,7 @@ import java.util.ResourceBundle;
 /**
  * Created by sergi on 4/8/16.
  */
-public class ClientPaneControler implements Initializable, IPaneControler {
+public class ClientPaneControler implements Initializable, PanelControler {
     public TableColumn col_nif;
     public TableColumn col_nom;
     public TableColumn col_carre;
