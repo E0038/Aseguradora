@@ -37,7 +37,7 @@
        <Button fx:id="btnCercarVehicle" layoutX="14.0" layoutY="238.0" mnemonicParsing="false" onAction="#findVehicle" prefHeight="25.0" prefWidth="125.0" text="Cercar per matricula" />
        <Button fx:id="btnModificarVehicle" layoutX="155.0" layoutY="238.0" mnemonicParsing="false" onAction="#updateVehicle" prefHeight="25.0" prefWidth="93.0" text="Modificar" />
        <Button fx:id="btnInsertarVehicle" layoutX="261.0" layoutY="238.0" mnemonicParsing="false" onAction="#insertVehicle" prefHeight="25.0" prefWidth="83.0" text="Insertar" />
-      <TableView layoutX="402.0" layoutY="14.0" prefHeight="185.0" prefWidth="282.0">
+      <TableView fx:id="tableVehiclesClients" layoutX="402.0" layoutY="14.0" prefHeight="185.0" prefWidth="282.0">
         <columns>
           <TableColumn prefWidth="75.0" text="C1" />
           <TableColumn prefWidth="75.0" text="C2" />

@@ -3,9 +3,7 @@ package org.e38.m6.aseguradora.control.FX;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Client;
 import org.e38.m6.aseguradora.model.Vehicle;
@@ -22,6 +20,8 @@ import java.util.ResourceBundle;
  * Created by sergi on 4/8/16.
  */
 public class VehiclesPaneControler implements Initializable,IPaneControler {
+    @FXML
+    private TableView tableVehiclesClients;
     @FXML
     private RadioButton radioClients;
     @FXML
@@ -112,10 +112,8 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
     }
 
     private Vehicle createVehicleObject(){
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("RESOURCE_LOCAL");
-        EntityManager em = emf.createEntityManager();
 
-        Query q = em.createQuery("SELECT p FROM Client p WHERE p.nif = '" + txtNif.getText() +"'");
+        Query q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Client p WHERE p.nif = '" + txtNif.getText() +"'");
         Client client = (Client)q.getSingleResult();
         Vehicle vehicle = new Vehicle();
 
@@ -126,5 +124,21 @@ public class VehiclesPaneControler implements Initializable,IPaneControler {
     }
 
     private void fillTable(ActionEvent actionEvent) {
+
+        Query q;
+        if (radioClients.isSelected()){
+            TableColumn nif = new TableColumn("NIF");
+            TableColumn nom = new TableColumn("Nom");
+            tableVehiclesClients.getColumns().clear();
+            tableVehiclesClients.getColumns().addAll(nif, nom);
+
+            q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
+            tableVehiclesClients.getItems().addAll(q.getResultList());
+            tableVehiclesClients.refresh();
+
+        }else if (radioVehicle.isSelected()){
+            q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
+
+        }
     }
 }
