@@ -3,6 +3,7 @@ package org.e38.m6.aseguradora.persistance;
 import org.e38.m6.aseguradora.model.IModelMarker;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Map;
 
 
@@ -77,6 +78,15 @@ public class DbManager {
         }
     }
 
+    public List<? extends IModelMarker> selectAll(Class<? extends IModelMarker> aClass) throws NoSuchEntityExeception {
+        if (aClass.isAnnotationPresent(Entity.class))
+            throw new NoSuchEntityExeception("not a Entity");
+        String name = aClass.getAnnotation(javax.persistence.Table.class).name();
+        if (name.isEmpty()) {
+            name = aClass.getSimpleName();
+        }
+        return entityManager.createQuery("SELECT p FROM " + name + " p ", aClass).getResultList();
+    }
 
     public void delete(IModelMarker obj) throws PersistanceExeception {
         entityGuard(obj);

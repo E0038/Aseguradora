@@ -12,7 +12,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
+import javafx.util.Pair;
+import org.e38.m6.aseguradora.control.FX.ClientPaneControler;
 import org.e38.m6.aseguradora.control.FX.PanelControler;
+import org.e38.m6.aseguradora.control.FX.PolissesPaneControler;
+import org.e38.m6.aseguradora.control.FX.VehiclesPaneControler;
 import org.e38.m6.aseguradora.persistance.DbManager;
 import org.e38.m6.aseguradora.view.fx.LoginDialog;
 import org.e38.m6.aseguradora.view.fx.RegisterDialog;
@@ -40,6 +44,7 @@ public class FxControler extends CommonControler implements Initializable {
     public VBox root;
     public ScrollPane containerPanel;
 
+
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
 
@@ -64,8 +69,10 @@ public class FxControler extends CommonControler implements Initializable {
 
     private void comboChange(javafx.event.Event actionEvent) {
         try {
-            Node node = FXMLLoader.load(includePanels.get(comboSouce.getValue()));
-            ((PanelControler) node).setFxControler(this);
+            FXMLLoader loader = new FXMLLoader(includePanels.get(comboSouce.getValue()));
+            Node node = loader.load();
+            PanelControler controler = loader.getController();
+            controler.setFxControler(this);
             containerPanel.setContent(node);
         } catch (IOException e) {
             e.printStackTrace();
