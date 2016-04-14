@@ -66,8 +66,7 @@ public class ManagerApplication extends Application {
             stage.getIcons().add(new Image(ASEGURADORA_WINDOW_ICON));
             stage.centerOnScreen();
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignored) {
         }
     }
 
@@ -83,21 +82,6 @@ public class ManagerApplication extends Application {
                 splash.close();
             }
         });
-    }
-
-    private void showSplash(Stage stage) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/org/e38/m6/aseguradora/recurses/layout/InitSplashScreen.fxml"));
-            ImageView imageView = (ImageView) root.lookup("#splashImage");
-            imageView.setImage(new Image(getClass().getResource("/org/e38/m6/aseguradora/recurses/img/splash.png").openStream()));
-            stage.setScene(new Scene(root, root.prefWidth(0), root.prefHeight(0)));
-            stage.setIconified(true);
-            stage.getIcons().add(new Image(ASEGURADORA_WINDOW_ICON));
-            stage.centerOnScreen();
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private static void createAndConfigure(Stage primaryStage, Stage splash) throws java.io.IOException {
