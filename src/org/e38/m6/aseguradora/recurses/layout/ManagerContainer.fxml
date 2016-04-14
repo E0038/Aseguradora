@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<VBox fx:id="root" prefHeight="450.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FxControler">
-   <children>
-       <MenuBar>
-          <menus>
-              <Menu mnemonicParsing="false" text="Identificarse">
-                 <items>
-                     <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loginAction" text="Log in" />
-                     <MenuItem fx:id="itemRegister" mnemonicParsing="false" onAction="#registerAction" text="Register" />
-                 </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Help">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="About" />
-                 </items>
-              </Menu>
-          </menus>
-       </MenuBar>
-       <BorderPane prefHeight="58.0" prefWidth="587.0">
-         <center>
-                <ComboBox fx:id="comboSouce" prefWidth="150.0" BorderPane.alignment="CENTER" />
-         </center></BorderPane>
-       <ScrollPane fx:id="containerPanel" prefHeight="300.0" prefWidth="700.0" />
-   </children>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:id="root" prefHeight="450.0" prefWidth="700.0"
+      xmlns="http://javafx.com/javafx/8" fx:controller="org.e38.m6.aseguradora.control.FxControler">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="Categorias">
+            <Menu mnemonicParsing="false" text="Categoria Activa">
+                <MenuItem mnemonicParsing="false" text="Clients" onAction="#setCategoriaClient"/>
+                <MenuItem mnemonicParsing="false" text="Vehicles" onAction="#setCategoriaVehicles"/>
+                <MenuItem mnemonicParsing="false" text="Polisa" onAction="#setCategoriaPolisa"/>
+            </Menu>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Identificarse">
+            <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loginAction" text="Log in"/>
+            <MenuItem fx:id="itemRegister" mnemonicParsing="false" onAction="#registerAction" text="Register"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About"/>
+        </Menu>
+    </MenuBar>
+    <BorderPane prefHeight="58.0" prefWidth="587.0">
+        <center>
+            <ComboBox fx:id="comboSouce" prefWidth="150.0" visible="false" BorderPane.alignment="CENTER"/>
+        </center>
+    </BorderPane>
+    <ScrollPane fx:id="containerPanel" prefHeight="300.0" prefWidth="700.0"/>
 </VBox>

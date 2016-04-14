@@ -3,6 +3,8 @@ package org.e38.m6.aseguradora.persistance;
 import org.e38.m6.aseguradora.model.IModelMarker;
 
 import javax.persistence.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
 import java.util.Map;
 
@@ -23,9 +25,13 @@ public class DbManager {
     private static DbManager ourInstance = new DbManager();
     private final EntityManagerFactory managerFactory;
     private final EntityManager entityManager;
+    private final String CONEC_STRING_LOCAL = "jdbc:oracle:thin:@192.168.180.10:1521:BD1314",
+            CONEC_STRING_EXTERNAL = "jdbc:oracle:thin:@ieslaferreria.xtec.cat:8081:BD1314";
+    @SuppressWarnings("DuplicateStringLiteralInspection")
+    private String user = "SAZNAR", password = "SAZNAR";
 
     private DbManager() {
-        managerFactory = Persistence.createEntityManagerFactory(persistenceUnit());// FIXME: 4/7/16 add method to determine the Persistance unit
+        managerFactory = Persistence.createEntityManagerFactory(persistenceUnit());
         entityManager = managerFactory.createEntityManager();
     }
 
@@ -34,7 +40,15 @@ public class DbManager {
     }
 
     private boolean checkExternalAcces() {
-        return false;// TODO: 4/7/16
+        try {
+            //noinspection UseOfJDBCDriverClass
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+            Connection c = DriverManager.getConnection(CONEC_STRING_EXTERNAL, user, password);
+            c.close();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public static DbManager getInstance() {
