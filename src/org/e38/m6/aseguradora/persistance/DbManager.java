@@ -3,8 +3,6 @@ package org.e38.m6.aseguradora.persistance;
 import org.e38.m6.aseguradora.model.IModelMarker;
 
 import javax.persistence.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.List;
 import java.util.Map;
 
@@ -40,15 +38,16 @@ public class DbManager {
     }
 
     private boolean checkExternalAcces() {
-        try {
-            //noinspection UseOfJDBCDriverClass
-            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            Connection c = DriverManager.getConnection(CONEC_STRING_EXTERNAL, user, password);
-            c.close();
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return false;
+//        try {
+//            //noinspection UseOfJDBCDriverClass
+//            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
+//            Connection c = DriverManager.getConnection(CONEC_STRING_EXTERNAL, user, password);
+//            c.close();
+//            return true;
+//        } catch (Exception e) {
+//            return false;
+//        }
     }
 
     public static DbManager getInstance() {
