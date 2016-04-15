@@ -51,7 +51,7 @@ public interface IManagerControler {
 
     Vehicle findByVeicleMatricula(String matricula);
 
-    Client findByClientName(String name);
+    List<Client> findByClientName(String name);
 
     Polissa findByPolisas(Client client);
 

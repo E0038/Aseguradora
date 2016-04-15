@@ -12,11 +12,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
-import javafx.util.Pair;
-import org.e38.m6.aseguradora.control.FX.ClientPaneControler;
 import org.e38.m6.aseguradora.control.FX.PanelControler;
-import org.e38.m6.aseguradora.control.FX.PolissesPaneControler;
-import org.e38.m6.aseguradora.control.FX.VehiclesPaneControler;
 import org.e38.m6.aseguradora.persistance.DbManager;
 import org.e38.m6.aseguradora.view.fx.LoginDialog;
 import org.e38.m6.aseguradora.view.fx.RegisterDialog;
@@ -43,8 +39,6 @@ public class FxControler extends CommonControler implements Initializable {
     public ComboBox<String> comboSouce;
     public VBox root;
     public ScrollPane containerPanel;
-
-
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
 
@@ -68,8 +62,12 @@ public class FxControler extends CommonControler implements Initializable {
     }
 
     private void comboChange(javafx.event.Event actionEvent) {
+        changeCategoria(comboSouce.getValue());
+    }
+
+    private void changeCategoria(String categoria) {
         try {
-            FXMLLoader loader = new FXMLLoader(includePanels.get(comboSouce.getValue()));
+            FXMLLoader loader = new FXMLLoader(includePanels.get(categoria));
             Node node = loader.load();
             PanelControler controler = loader.getController();
             controler.setFxControler(this);
@@ -91,6 +89,10 @@ public class FxControler extends CommonControler implements Initializable {
 
     public void onCloseResquest(WindowEvent windowEvent) {
         Platform.exit();
+        getDbManager().getEntityManager().getTransaction().begin();
+        getDbManager().getEntityManager().flush();
+        getDbManager().getEntityManager().getTransaction().commit();
+        System.exit(0);
     }
 
     public void registerAction(ActionEvent actionEvent) {
@@ -111,5 +113,17 @@ public class FxControler extends CommonControler implements Initializable {
                 showError("contraseña o usario incorrecto");
             }
         });
+    }
+
+    public void setCategoriaPolisa(ActionEvent actionEvent) {
+        changeCategoria(KEY_POLISA);
+    }
+
+    public void setCategoriaVehicles(ActionEvent actionEvent) {
+        changeCategoria(KEY_VEHICLE);
+    }
+
+    public void setCategoriaClient(ActionEvent actionEvent) {
+        changeCategoria(KEY_CLIENT);
     }
 }

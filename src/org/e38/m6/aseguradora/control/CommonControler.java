@@ -97,10 +97,10 @@ public class CommonControler implements IManagerControler {
     }
 
     @Override
-    public Client findByClientName(String name) {
+    public List<Client> findByClientName(String name) {
         return dbManager.getEntityManager().createNamedQuery(Client.FIND_CLIENT_BY_NAME, Client.class)
                 .setParameter("name", name)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override

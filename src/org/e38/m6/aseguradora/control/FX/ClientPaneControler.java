@@ -1,5 +1,7 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +13,7 @@ import org.e38.m6.aseguradora.model.Adreca;
 import org.e38.m6.aseguradora.model.Client;
 
 import java.net.URL;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -18,11 +21,11 @@ import java.util.ResourceBundle;
  * Created by sergi on 4/8/16.
  */
 public class ClientPaneControler implements Initializable, PanelControler {
-    public TableColumn col_nif;
-    public TableColumn col_nom;
-    public TableColumn col_carre;
-    public TableColumn col_numero;
-    public TableColumn col_poblacio;
+    public TableColumn<Client, String> col_nif;
+    public TableColumn<Client, String> col_nom;
+    public TableColumn<Client, String> col_carre;
+    public TableColumn<Client, Integer> col_numero;
+    public TableColumn<Client, String> col_poblacio;
     @FXML
     private TextField txtNif;
     @FXML
@@ -67,6 +70,17 @@ public class ClientPaneControler implements Initializable, PanelControler {
         }
     }
 
+    @Override
+    public FxControler getFxControler() {
+        return fxControler;
+    }
+
+    @Override
+    public ClientPaneControler setFxControler(FxControler fxControler) {
+        this.fxControler = fxControler;
+        return this;
+    }
+
     private Client getInputClient() {
         String nif = txtNif.getText(), nom = txtNom.getText(),
                 carre = txtCarrer.getText(), numCarrer = txtNumCarrer.getText(),
@@ -81,12 +95,15 @@ public class ClientPaneControler implements Initializable, PanelControler {
     }
 
     private void fillTableViewWithName(String name) {
-        Client client = fxControler.findByClientName(name);
-
+        List<Client> clients = fxControler.findByClientName(name);
+        displayClients.clear();
+        displayClients.addAll(clients);
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        displayClients = FXCollections.observableArrayList();
+        displayClients.add(new Client().setId(1).setNif("foo").setNom("Mock Client").setAdreca(new Adreca().setPoblacio("foovar").setNumero(2).setCarrer("Carrer 1")));
         configure();
     }
 
@@ -100,27 +117,17 @@ public class ClientPaneControler implements Initializable, PanelControler {
         seachInput.setHeaderText("Introduce client name: ");
         seachInput.setContentText("Enter your name client:");
 
-        displayClients = FXCollections.observableArrayList();
         configureTable();
     }
 
     private void configureTable() {
         tableClients.setEditable(false);
-//        col_nif.setCellFactory(new Callback<TableColumn, TableCell>() {
-//
-//        });
+        col_nif.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNif()));
+        col_nom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNom()));
+        col_carre.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca().getCarrer()));
+        col_poblacio.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca().getPoblacio()));
+        col_numero.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getAdreca().getNumero()).asObject());
         tableClients.setItems(displayClients);
-    }
-
-    @Override
-    public FxControler getFxControler() {
-        return fxControler;
-    }
-
-    @Override
-    public ClientPaneControler setFxControler(FxControler fxControler) {
-        this.fxControler = fxControler;
-        return this;
     }
 
     public TableView<Client> getTableClients() {
