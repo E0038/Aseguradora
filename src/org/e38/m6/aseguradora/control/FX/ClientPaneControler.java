@@ -129,13 +129,4 @@ public class ClientPaneControler implements Initializable, PanelControler {
         col_numero.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getAdreca().getNumero()).asObject());
         tableClients.setItems(displayClients);
     }
-
-    public TableView<Client> getTableClients() {
-        return tableClients;
-    }
-
-    public ClientPaneControler setTableClients(TableView<Client> tableClients) {
-        this.tableClients = tableClients;
-        return this;
-    }
 }
