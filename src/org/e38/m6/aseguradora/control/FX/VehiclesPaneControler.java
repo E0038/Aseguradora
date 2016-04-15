@@ -1,8 +1,11 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import com.sun.rowset.internal.Row;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -23,8 +26,11 @@ import java.util.ResourceBundle;
  * Created by sergi on 4/8/16.
  */
 public class VehiclesPaneControler implements Initializable, PanelControler {
-    public ToggleGroup select;
-    public Button btnCercar;
+
+    @FXML
+    private ToggleGroup select;
+    @FXML
+    private Button btnCercar;
     FxControler fx;
     @FXML
     private TableView tableVehiclesClients;
@@ -48,6 +54,8 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     private Button btnInsertarVehicle;
     @FXML
     private ObservableList<Client> data;
+    @FXML
+    private ObservableList<Vehicle> data2;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -81,22 +89,14 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     }
 
     public void findVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7) {
-
-            fx.showError("La matrícula no està completa");
-
-        } else {
-            EntityManagerFactory emf = Persistence.createEntityManagerFactory("RESOURCE_LOCAL");
-            EntityManager em = emf.createEntityManager();
-
-            Query q = em.createQuery("SELECT p FROM Vehicle p WHERE p.matricula = '" + txtMatricula.getText() + "'");
-            Vehicle vehicle = (Vehicle) q.getSingleResult();
-
+        if (txtMatricula.getText() != null && txtMatricula.getText() != "" && txtMatricula.getText().length() == 7){
+            Vehicle vehicle = fx.findByVeicleMatricula(txtMatricula.getText());
             txtMarca.setText(vehicle.getMarcaModel());
             txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
             txtNif.setText(vehicle.getPropietari().getNif());
+        }else{
+            fx.showError("La matrícula és incorrecta");
         }
-
     }
 
     public void updateVehicle(ActionEvent actionEvent) {
@@ -115,8 +115,7 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
 
     private Vehicle createVehicleObject() {
 
-        Query q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Client p WHERE p.nif = '" + txtNif.getText() + "'");
-        Client client = (Client) q.getSingleResult();
+        Client client = fx.findByClientNif(txtNif.getText());
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMatricula(txtMatricula.getText()).setMarcaModel(txtMarca.getText()).setMarcaModel(txtMarca.getText()
@@ -139,18 +138,18 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
         }
     }
 
-    @FXML
-    private void fillTable(ActionEvent actionEvent) {
 
-        Query q;
+    public void fillTable(ActionEvent actionEvent) {
+
+        data = FXCollections.observableArrayList();
         if (radioClients.isSelected()) {
-            tableVehiclesClients.setItems(data);
             TableColumn<Client,String > nif = new TableColumn("NIF");
             TableColumn<Client, String> nom = new TableColumn("Nom");
             nif.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNif()));
             nom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNom()));
             tableVehiclesClients.getColumns().clear();
             tableVehiclesClients.getColumns().addAll(nif, nom);
+            tableVehiclesClients.setItems(data);
 
             List<Client> clients = null;
             try {
@@ -162,26 +161,40 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
                 noSuchEntityExeception.printStackTrace();
             }
 
-            /*if (clients != null && clients.size() > 0){
-                tableVehiclesClients.getItems().addAll(q.getResultList());
-                tableVehiclesClients.refresh();
-            }else{
-                fx.showError("No hay clientes insertados");
-            }*/
-
-
         } else if (radioVehicle.isSelected()) {
             TableColumn matricula = new TableColumn("Matricula");
             TableColumn marca = new TableColumn("Marca y model");
             TableColumn any = new TableColumn("Any fabricació");
             TableColumn mar = new TableColumn("Marca y model");
-
-
             tableVehiclesClients.getColumns().clear();
-            tableVehiclesClients.getColumns().addAll(matricula, marca);
+            tableVehiclesClients.getColumns().addAll(matricula, marca, any, mar);
+            tableVehiclesClients.setItems(data2);
 
-            q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Vehicle p");
+            List<Vehicle> vehicles = null;
+            try {
+                vehicles = (List<Vehicle>) fx.getDbManager().selectAll(Vehicle.class);
+                data2.clear();
+                data2.addAll(vehicles);
+            } catch (NoSuchEntityExeception noSuchEntityExeception) {
+                noSuchEntityExeception.printStackTrace();
+            }
+        }else{
+            fx.showError("Selecciona vehicles o clients");
+        }
+    }
 
+    public void volcarDatosFila(Event event) {
+        if (radioClients.isSelected()){
+            Client client = (Client) tableVehiclesClients.getSelectionModel().getSelectedItem();
+            txtNif.setText(client.getNif());
+
+        } else if (radioVehicle.isSelected()){
+            Vehicle vehicle = (Vehicle) tableVehiclesClients.getSelectionModel().getSelectedItem();
+            txtMatricula.setText(vehicle.getMatricula());
+            txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
+            txtMarca.setText(vehicle.getMarcaModel());
+        }else{
+            fx.showError("Selecciona vehicles o clients");
         }
     }
 }

@@ -103,6 +103,12 @@ public class CommonControler implements IManagerControler {
                 .getResultList();
     }
 
+    public Client findByClientNif(String nif) {
+        return dbManager.getEntityManager().createNamedQuery(Client.FIND_CLIENT_BY_NIF, Client.class)
+                .setParameter("nif", nif)
+                .getSingleResult();
+    }
+
     @Override
     public Polissa findByPolisas(Client client) {
         return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSE_BY_CLIENT, Polissa.class)
