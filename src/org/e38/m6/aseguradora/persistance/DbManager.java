@@ -104,6 +104,7 @@ public class DbManager {
         if (name.isEmpty()) {
             name = aClass.getSimpleName();
         }
+
         return entityManager.createQuery("SELECT p FROM " + name + " p ", aClass).getResultList();
     }
 
