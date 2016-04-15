@@ -1,39 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="301.0000999999975" prefWidth="700.0" xmlns="http://javafx.com/javafx/8"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FX.PolissesPaneControler">
-    <TextField fx:id="txtNumPolissa" layoutX="179.0" layoutY="22.0" prefWidth="200.0"/>
-    <TextField id="txtNumPolissa" fx:id="txtNifPrenedor" layoutX="179.0" layoutY="51.0" prefWidth="200.0"/>
-    <TextField id="txtNumPolissa" fx:id="txtMatriculaPolissa" layoutX="179.0" layoutY="82.0" prefWidth="200.0"/>
-    <Label layoutX="31.0" layoutY="21.0" text="Nº pòlissa:">
-        <font>
-            <Font size="18.0" fx:id="x1"/>
-        </font>
-    </Label>
-    <Label font="$x1" layoutX="31.0" layoutY="50.0" text="NIF Prenedor:"/>
-    <Label font="$x1" layoutX="31.0" layoutY="81.0" text="Matricula vehicle:"/>
-    <Label font="$x1" layoutX="31.0" layoutY="117.0" text="Data inici:"/>
-    <Label font="$x1" layoutX="31.0" layoutY="149.0" text="Data fi:"/>
-    <Label font="$x1" layoutX="31.0" layoutY="179.0" text="Tipus"/>
-    <DatePicker fx:id="DatePickerIniciPolissa" layoutX="179.0" layoutY="117.0" prefHeight="27.0" prefWidth="200.0"/>
-    <DatePicker fx:id="DatePickerFiPolissa" layoutX="179.0" layoutY="150.0" prefHeight="25.0" prefWidth="200.0"/>
-    <Button fx:id="btnInsertPolissa" layoutX="31.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0"
-            prefWidth="125.0" text="Insertar"/>
-    <ComboBox fx:id="comboTipus" layoutX="179.0" layoutY="180.0" prefHeight="25.0" prefWidth="200.0"/>
-    <Button fx:id="btnModificarPolissa" layoutX="179.0" layoutY="231.0" mnemonicParsing="false" prefHeight="25.0"
-            prefWidth="125.0" text="Modificar"/>
-    <TableView fx:id="tablePolisses" layoutX="397.0" layoutY="17.0" prefHeight="200.0" prefWidth="290.0">
-        <columns>
-            <TableColumn prefWidth="75.0" text="C1"/>
-            <TableColumn prefWidth="75.0" text="C2"/>
-        </columns>
-    </TableView>
-    <Button fx:id="btnCercarPolissaNif" layoutX="366.0" layoutY="231.0" mnemonicParsing="false" text="Cercar per NIF"/>
-    <Button fx:id="btnCercarPolissaMatr" layoutX="466.0" layoutY="231.0" mnemonicParsing="false"
-            text="Cercar per Matricula"/>
-    <Button fx:id="btnCercarPolissaVig" layoutX="596.0" layoutY="231.0" mnemonicParsing="false" text="Cercar vigents"/>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0000999999975" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FX.PolissesPaneControler">
+   <children>
+       <TextField fx:id="txtNumPolissa" layoutX="179.0" layoutY="15.0" prefWidth="200.0" />
+       <TextField id="txtNumPolissa" fx:id="txtNifPrenedor" layoutX="179.0" layoutY="44.0" prefWidth="200.0" />
+       <TextField id="txtNumPolissa" fx:id="txtMatriculaPolissa" layoutX="179.0" layoutY="75.0" prefWidth="200.0" />
+       <Label layoutX="32.0" layoutY="14.0" text="Nº pòlissa:">
+           <font>
+               <Font size="18.0" fx:id="x1" />
+           </font>
+       </Label>
+       <Label font="$x1" layoutX="31.0" layoutY="43.0" text="NIF Prenedor:" />
+       <Label font="$x1" layoutX="31.0" layoutY="74.0" text="Matricula vehicle:" />
+       <Label font="$x1" layoutX="31.0" layoutY="110.0" text="Data inici:" />
+       <Label font="$x1" layoutX="31.0" layoutY="142.0" text="Data fi:" />
+       <Label font="$x1" layoutX="31.0" layoutY="172.0" text="Tipus:" />
+       <DatePicker fx:id="DatePickerIniciPolissa" layoutX="179.0" layoutY="110.0" prefHeight="27.0" prefWidth="200.0" />
+       <DatePicker fx:id="DatePickerFiPolissa" layoutX="179.0" layoutY="143.0" prefHeight="25.0" prefWidth="200.0" />
+       <Button fx:id="btnInsertPolissa" layoutX="33.0" layoutY="256.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Insertar" />
+       <ComboBox fx:id="comboTipus" layoutX="179.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0" />
+       <Button fx:id="btnModificarPolissa" layoutX="181.0" layoutY="256.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Modificar" />
+       <TableView fx:id="tablePolisses" layoutX="397.0" layoutY="17.0" prefHeight="200.0" prefWidth="290.0">
+           <columns>
+               <TableColumn prefWidth="75.0" text="C1" />
+               <TableColumn prefWidth="75.0" text="C2" />
+           </columns>
+       </TableView>
+       <Button fx:id="btnCercarPolissaNif" layoutX="508.0" layoutY="259.0" mnemonicParsing="false" text="Cercar per NIF" />
+       <Button fx:id="btnCercarPolissaMatr" layoutX="432.0" layoutY="228.0" mnemonicParsing="false" text="Cercar per Matricula" />
+       <Button fx:id="btnCercarPolissaVig" layoutX="562.0" layoutY="228.0" mnemonicParsing="false" text="Cercar vigents" />
+      <Label layoutX="32.0" layoutY="209.0" text="Cobertures:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ComboBox fx:id="comboCobertures" layoutX="179.0" layoutY="210.0" prefHeight="25.0" prefWidth="200.0" />
+   </children>
 </AnchorPane>
