@@ -106,7 +106,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
                 .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
                 .or(txtMatriculaPolissa.textProperty().isEmpty())
-                .or(hasSelectedIdx)
+//                .or(hasSelectedIdx)
         );
 
     }
