@@ -56,7 +56,11 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.TERCERS.name(), Polissa.TYPE.TOT_RISC.name()));
         comboTipus.getSelectionModel().select(0);
 
-//        FxControler.configureReadOnlyTableByClass(tablePolisses, Polissa.class);
+        confiureTable();
+
+    }
+
+    private void confiureTable() {
         tablePolisses.setItems(displayPolisas);
     }
 
