@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.*?>
@@ -41,15 +42,15 @@
     <Button fx:id="btnEliminarClient" layoutX="242.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
             prefWidth="104.0" text="Eliminar"/>
     <Button fx:id="btnCercarClient" layoutX="479.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0"
-            prefWidth="104.0" text="Cercar per Nom"/>
+            prefWidth="141.0" text="Cercar per Nom"/>
     <TableView fx:id="tableClients" layoutX="390.0" layoutY="10.0" prefHeight="200.0" prefWidth="294.0">
         <columns>
             <!--<TableColumn prefWidth="75.0" text="ID" fx:id="col_id"/>-->
-            <TableColumn prefWidth="75.0" text="NIF" fx:id="col_nif"/>
-            <TableColumn prefWidth="75.0" text="nom Client" fx:id="col_nom"/>
-            <TableColumn prefWidth="75.0" text="Carrer" fx:id="col_carre"/>
-            <TableColumn prefWidth="75.0" text="Numero" fx:id="col_numero"/>
-            <TableColumn prefWidth="75.0" text="Poblacio" fx:id="col_poblacio"/>
+            <TableColumn fx:id="col_nif" prefWidth="75.0" text="NIF"/>
+            <TableColumn fx:id="col_nom" prefWidth="75.0" text="nom Client"/>
+            <TableColumn fx:id="col_carre" prefWidth="75.0" text="Carrer"/>
+            <TableColumn fx:id="col_numero" prefWidth="75.0" text="Numero"/>
+            <TableColumn fx:id="col_poblacio" prefWidth="75.0" text="Poblacio"/>
         </columns>
     </TableView>
 </Pane>
