@@ -1,5 +1,7 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,12 +9,14 @@ import javafx.scene.control.*;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Client;
 import org.e38.m6.aseguradora.model.Vehicle;
+import org.e38.m6.aseguradora.persistance.NoSuchEntityExeception;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -42,6 +46,8 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     private Button btnModificarVehicle;
     @FXML
     private Button btnInsertarVehicle;
+    @FXML
+    private ObservableList<Client> data;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -138,18 +144,30 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
 
         Query q;
         if (radioClients.isSelected()) {
-            TableColumn nif = new TableColumn("NIF");
-            TableColumn nom = new TableColumn("Nom");
+            tableVehiclesClients.setItems(data);
+            TableColumn<Client,String > nif = new TableColumn("NIF");
+            TableColumn<Client, String> nom = new TableColumn("Nom");
+            nif.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNif()));
+            nom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNom()));
             tableVehiclesClients.getColumns().clear();
             tableVehiclesClients.getColumns().addAll(nif, nom);
 
-            q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
-            if (!q.getResultList().isEmpty()){
+            List<Client> clients = null;
+            try {
+                clients = (List<Client>) fx.getDbManager().selectAll(Client.class);
+                data.clear();
+                data.addAll(clients);
+
+            } catch (NoSuchEntityExeception noSuchEntityExeception) {
+                noSuchEntityExeception.printStackTrace();
+            }
+
+            /*if (clients != null && clients.size() > 0){
                 tableVehiclesClients.getItems().addAll(q.getResultList());
                 tableVehiclesClients.refresh();
             }else{
                 fx.showError("No hay clientes insertados");
-            }
+            }*/
 
 
         } else if (radioVehicle.isSelected()) {
@@ -162,7 +180,7 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
             tableVehiclesClients.getColumns().clear();
             tableVehiclesClients.getColumns().addAll(matricula, marca);
 
-            q = fx.getDbManager().getEntityManager().createQuery("SELECT p.nif, p.nom FROM Client p");
+            q = fx.getDbManager().getEntityManager().createQuery("SELECT p FROM Vehicle p");
 
         }
     }
