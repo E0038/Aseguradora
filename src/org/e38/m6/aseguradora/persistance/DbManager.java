@@ -73,7 +73,9 @@ public class DbManager {
     public void insert(IModelMarker obj) throws PersistanceExeception {
         entityGuard(obj);
         try {
+            entityManager.getTransaction().begin();
             entityManager.persist(obj);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new PersistanceExeception(e.getMessage());
         }
@@ -87,7 +89,10 @@ public class DbManager {
     public void update(IModelMarker obj) throws PersistanceExeception {
         entityGuard(obj);
         try {
+            entityManager.getTransaction().begin();
             entityManager.merge(obj);
+            entityManager.getTransaction().commit();
+
         } catch (Exception e) {
             throw new PersistanceExeception(e.getMessage());
         }
@@ -111,7 +116,9 @@ public class DbManager {
     public void delete(IModelMarker obj) throws PersistanceExeception {
         entityGuard(obj);
         try {
+            entityManager.getTransaction().begin();
             entityManager.remove(obj);
+            entityManager.getTransaction().commit();
         } catch (Exception e) {
             throw new PersistanceExeception(e.getMessage());
         }

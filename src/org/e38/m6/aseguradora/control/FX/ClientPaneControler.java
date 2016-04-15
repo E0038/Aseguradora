@@ -103,7 +103,6 @@ public class ClientPaneControler implements Initializable, PanelControler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         displayClients = FXCollections.observableArrayList();
-        displayClients.add(new Client().setId(1).setNif("foo").setNom("Mock Client").setAdreca(new Adreca().setPoblacio("foovar").setNumero(2).setCarrer("Carrer 1")));
         configure();
     }
 

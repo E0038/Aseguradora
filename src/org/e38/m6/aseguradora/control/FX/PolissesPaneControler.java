@@ -45,6 +45,11 @@ public class PolissesPaneControler implements Initializable,PanelControler {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
+        configure();
+    }
+
+    private void configure() {
+
     }
 
 
