@@ -94,7 +94,7 @@ public class DbManager {
     }
 
     public List<? extends IModelMarker> selectAll(Class<? extends IModelMarker> aClass) throws NoSuchEntityExeception {
-        if (aClass.isAnnotationPresent(Entity.class))
+        if (!aClass.isAnnotationPresent(Entity.class))
             throw new NoSuchEntityExeception("not a Entity");
         Table table = aClass.getAnnotation(javax.persistence.Table.class);
         String name = "";
