@@ -133,7 +133,7 @@ public class Polissa implements IModelMarker, Serializable {
         TERCERS, TOT_RISC;
     }
 
-    enum Cobertura {
+    public enum Cobertura {
         ROBATORI, INCENDI, VIDRES;
     }
 }

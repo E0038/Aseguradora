@@ -11,13 +11,19 @@ import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
 
 import java.net.URL;
-import java.util.EnumSet;
 import java.util.ResourceBundle;
 
 /**
  * Created by sergi on 4/8/16.
+ * Pòlisses:
+ * inserir, modificar,
+ * cerques de pòlisses d'un client, d'un vehicle i vigents.
  */
 public class PolissesPaneControler implements Initializable, PanelControler {
+    @FXML
+    private ListView<Boolean> listChecks;
+    @FXML
+    private ListView<Polissa.Cobertura> listCovertures;
     @FXML
     private TextField txtNumPolissa;
     @FXML
@@ -33,7 +39,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     @FXML
     private Button btnInsertPolissa;
     @FXML
-    private ComboBox<String> comboTipus;
+    private ComboBox<Polissa.TYPE> comboTipus;
     @FXML
     private Button btnModificarPolissa;
     @FXML
@@ -53,18 +59,33 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     }
 
     private void configure() {
-        comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.TERCERS.name(), Polissa.TYPE.TOT_RISC.name()));
+        comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.values()));
         comboTipus.getSelectionModel().select(0);
-
-        confiureTable();
+        listCovertures.setItems(FXCollections.observableArrayList(Polissa.Cobertura.values()));
+        listChecks.getCellFactory();
+//        comboCobertures.setItems(FXCollections.observableArrayList(Polissa.Cobertura.values()));
+//        comboCobertures.getSelectionModel().select(0);
+        configureTable();//
+        configureBlindings();
 
     }
 
-    private void confiureTable() {
+    private void configureTable() {
+        tablePolisses.getColumns().addAll();
         tablePolisses.setItems(displayPolisas);
+
+
     }
 
-    private Polissa getInputInstance(){
+    private void configureBlindings() {
+        btnModificarPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty());
+        btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
+                .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
+                .or(txtMatriculaPolissa.textProperty().isEmpty())
+        );
+    }
+
+    private Polissa getInputInstance() {
         return null;
     }
 
@@ -91,6 +112,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
 
     @Override
     public PanelControler setFxControler(FxControler fxControler) {
+        this.fxControler = fxControler;
         return this;
     }
 }

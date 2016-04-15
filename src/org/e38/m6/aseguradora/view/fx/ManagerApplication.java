@@ -38,6 +38,7 @@ public class ManagerApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Stage splash = new Stage(StageStyle.UNDECORATED);
+        splash.setAlwaysOnTop(true);
         showSplash(splash); // mostramos una splash screen para mietras cargamos los recursos
         ((Label) splash.getScene().lookup("#infoMsg")).setText("loading database components...");
         new Thread(() -> {

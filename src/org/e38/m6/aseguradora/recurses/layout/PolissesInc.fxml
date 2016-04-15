@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.*?>
 <?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
@@ -8,8 +9,22 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="301.0000999999975" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FX.PolissesPaneControler">
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="331.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FX.PolissesPaneControler">
    <children>
+      <GridPane layoutX="179.0" layoutY="202.0" prefHeight="86.0" prefWidth="210.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="150.0" minWidth="10.0" prefWidth="142.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="94.0" minWidth="10.0" prefWidth="58.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+             <ListView fx:id="listCovertures" layoutX="179.0" layoutY="202.0" prefHeight="83.0" prefWidth="200.0" />
+            <ListView fx:id="listChecks" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+         </children>
+      </GridPane>
        <TextField fx:id="txtNumPolissa" layoutX="179.0" layoutY="15.0" prefWidth="200.0" />
        <TextField id="txtNumPolissa" fx:id="txtNifPrenedor" layoutX="179.0" layoutY="44.0" prefWidth="200.0" />
        <TextField id="txtNumPolissa" fx:id="txtMatriculaPolissa" layoutX="179.0" layoutY="75.0" prefWidth="200.0" />
@@ -19,40 +34,39 @@
            </font>
        </Label>
        <Label font="$x1" layoutX="31.0" layoutY="43.0" text="NIF Prenedor:" />
-       <Label font="$x1" layoutX="31.0" layoutY="74.0" text="Matricula vehicle:" />
+       <Label font="$x1" layoutX="31.0" layoutY="74.0" text="Matricula:" />
        <Label font="$x1" layoutX="31.0" layoutY="110.0" text="Data inici:" />
        <Label font="$x1" layoutX="31.0" layoutY="142.0" text="Data fi:" />
        <Label font="$x1" layoutX="31.0" layoutY="172.0" text="Tipus:" />
        <DatePicker fx:id="DatePickerIniciPolissa" layoutX="179.0" layoutY="110.0" prefHeight="27.0" prefWidth="200.0" />
        <DatePicker fx:id="DatePickerFiPolissa" layoutX="179.0" layoutY="143.0" prefHeight="25.0" prefWidth="200.0" />
-       <Button fx:id="btnInsertPolissa" layoutX="33.0" layoutY="256.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Insertar" />
+       <Button fx:id="btnInsertPolissa" layoutX="32.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Insertar" />
        <ComboBox fx:id="comboTipus" layoutX="179.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0" />
-       <Button fx:id="btnModificarPolissa" layoutX="181.0" layoutY="256.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Modificar" />
-      <VBox layoutX="391.0" layoutY="17.0" spacing="10.0">
-         <children>
-             <TableView fx:id="tablePolisses" layoutX="397.0" layoutY="17.0" prefHeight="200.0" prefWidth="290.0">
-                 <columns>
-                     <TableColumn prefWidth="75.0" text="C1" />
-                     <TableColumn prefWidth="75.0" text="C2" />
-                 </columns>
-             </TableView>
-            <FlowPane alignment="TOP_CENTER" hgap="10.0" layoutX="391.0" layoutY="230.0" prefHeight="60.0" prefWidth="305.0" vgap="5.0" AnchorPane.rightAnchor="4.0">
-               <children>
-                   <Button fx:id="btnCercarPolissaNif" mnemonicParsing="false" text="Cercar per NIF" />
-                   <Button fx:id="btnCercarPolissaMatr" mnemonicParsing="false" text="Cercar per Matricula" />
-                   <Button fx:id="btnCercarPolissaVig" mnemonicParsing="false" text="Cercar vigents" />
-               </children>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </FlowPane>
-         </children>
-      </VBox>
-      <Label layoutX="32.0" layoutY="209.0" text="Cobertures:">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <ComboBox fx:id="comboCobertures" layoutX="179.0" layoutY="210.0" prefHeight="25.0" prefWidth="200.0" />
+       <Button fx:id="btnModificarPolissa" layoutX="180.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="125.0" text="Modificar" />
+       <VBox layoutX="391.0" layoutY="17.0" spacing="10.0">
+          <children>
+              <TableView fx:id="tablePolisses" layoutX="397.0" layoutY="17.0" prefHeight="236.0" prefWidth="305.0">
+                  <columns>
+                      <TableColumn prefWidth="75.0" text="C1" />
+                      <TableColumn prefWidth="75.0" text="C2" />
+                  </columns>
+              </TableView>
+              <FlowPane alignment="TOP_CENTER" hgap="10.0" layoutX="391.0" layoutY="230.0" prefHeight="68.0" prefWidth="305.0" vgap="5.0" AnchorPane.rightAnchor="4.0">
+                  <opaqueInsets>
+                      <Insets />
+                  </opaqueInsets>
+                 <children>
+                     <Button fx:id="btnCercarPolissaNif" mnemonicParsing="false" text="Cercar per NIF" />
+                     <Button fx:id="btnCercarPolissaMatr" mnemonicParsing="false" text="Cercar per Matricula" />
+                     <Button fx:id="btnCercarPolissaVig" mnemonicParsing="false" text="Cercar vigents" />
+                 </children>
+              </FlowPane>
+          </children>
+       </VBox>
+       <Label layoutX="32.0" layoutY="209.0" text="Cobertures:">
+           <font>
+               <Font size="18.0" />
+           </font>
+       </Label>
    </children>
 </AnchorPane>
