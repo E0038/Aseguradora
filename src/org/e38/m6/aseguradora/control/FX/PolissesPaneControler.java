@@ -1,11 +1,15 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.text.Font;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
@@ -33,9 +37,9 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     @FXML
     private Font x1;
     @FXML
-    private DatePicker DatePickerIniciPolissa;
+    private DatePicker datePickerIniciPolissa;
     @FXML
-    private DatePicker DatePickerFiPolissa;
+    private DatePicker datePickerFiPolissa;
     @FXML
     private Button btnInsertPolissa;
     @FXML
@@ -52,6 +56,8 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     private Button btnCercarPolissaVig;
     private FxControler fxControler;
     private ObservableList<Polissa> displayPolisas = FXCollections.observableArrayList();
+    private ObservableList<Integer> selectedCovertures = FXCollections.observableArrayList();
+    private BooleanProperty hasSelectedIdx = new SimpleBooleanProperty(false);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -62,9 +68,27 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.values()));
         comboTipus.getSelectionModel().select(0);
         listCovertures.setItems(FXCollections.observableArrayList(Polissa.Cobertura.values()));
-        listChecks.getCellFactory();
-//        comboCobertures.setItems(FXCollections.observableArrayList(Polissa.Cobertura.values()));
-//        comboCobertures.getSelectionModel().select(0);
+        listCovertures.setCellFactory(CheckBoxListCell.forListView(item -> {
+            BooleanProperty observable = new SimpleBooleanProperty();
+
+            observable.addListener((obs, wasSelected, isNowSelected) -> {
+                if (isNowSelected) {
+                    selectedCovertures.add(listCovertures.getItems().indexOf(item));
+                } else {
+                    // new Integer para prevenir que lanze el metodo remove(int idx) envez de remove(Object e)
+                    selectedCovertures.remove(new Integer(listCovertures.getItems().indexOf(item)));
+                }
+                System.out.println(selectedCovertures);
+            });
+
+            return observable;
+        }));
+        selectedCovertures.addListener(new ListChangeListener<Integer>() {
+            @Override
+            public void onChanged(Change<? extends Integer> c) {
+                hasSelectedIdx.set(!selectedCovertures.isEmpty());
+            }
+        });
         configureTable();//
         configureBlindings();
 
@@ -82,7 +106,9 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
                 .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
                 .or(txtMatriculaPolissa.textProperty().isEmpty())
+                .or(hasSelectedIdx)
         );
+
     }
 
     private Polissa getInputInstance() {
