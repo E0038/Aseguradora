@@ -47,7 +47,7 @@ public class ClientPaneControler implements Initializable, PanelControler {
 
     private FxControler fxControler;
     private TextInputDialog seachInput;
-    private ObservableList<Client> displayClients;
+    private ObservableList<Client> displayClients = FXCollections.observableArrayList();
 
 
     @Override
@@ -121,11 +121,11 @@ public class ClientPaneControler implements Initializable, PanelControler {
 
     private void configureTable() {
         tableClients.setEditable(false);
+        tableClients.setItems(displayClients);
         col_nif.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNif()));
         col_nom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNom()));
-        col_carre.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca().getCarrer()));
-        col_poblacio.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca().getPoblacio()));
-        col_numero.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getAdreca().getNumero()).asObject());
-        tableClients.setItems(displayClients);
+        col_carre.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca() != null ? param.getValue().getAdreca().getCarrer() : ""));
+        col_poblacio.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getAdreca() != null ? param.getValue().getAdreca().getPoblacio() : ""));
+        col_numero.setCellValueFactory(param -> new SimpleIntegerProperty(param.getValue().getAdreca() != null ? param.getValue().getAdreca().getNumero() : 0).asObject());
     }
 }

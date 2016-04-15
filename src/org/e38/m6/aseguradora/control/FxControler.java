@@ -1,23 +1,23 @@
 package org.e38.m6.aseguradora.control;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
 import org.e38.m6.aseguradora.control.FX.PanelControler;
+import org.e38.m6.aseguradora.model.IModelMarker;
 import org.e38.m6.aseguradora.persistance.DbManager;
 import org.e38.m6.aseguradora.view.fx.LoginDialog;
 import org.e38.m6.aseguradora.view.fx.RegisterDialog;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +42,25 @@ public class FxControler extends CommonControler implements Initializable {
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
 
+    @Deprecated
+    public static <T extends IModelMarker> void configureReadOnlyTableByClass(TableView<T> table, Class<T> modelClass) {
+        table.setEditable(false);
+        for (Field field : modelClass.getDeclaredFields()) {
+            if (!field.isAnnotationPresent(javax.persistence.Transient.class)) {
+                TableColumn<T, String> column = new TableColumn<>(field.getName());
+                column.setCellValueFactory(param -> {
+                    try {
+                        T value = param.getValue();
+                        Field colField = value.getClass().getDeclaredField(field.getName());
+                        return new SimpleStringProperty(colField.get(value) != null ? colField.get(value).toString() : "");
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        return null;
+                    }
+                });
+                table.getColumns().add(column);
+            }
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

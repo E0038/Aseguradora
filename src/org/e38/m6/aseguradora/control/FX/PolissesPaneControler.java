@@ -1,19 +1,23 @@
 package org.e38.m6.aseguradora.control.FX;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import org.e38.m6.aseguradora.control.FxControler;
+import org.e38.m6.aseguradora.model.Polissa;
 
 import java.net.URL;
+import java.util.EnumSet;
 import java.util.ResourceBundle;
 
 /**
  * Created by sergi on 4/8/16.
  */
-public class PolissesPaneControler implements Initializable,PanelControler {
+public class PolissesPaneControler implements Initializable, PanelControler {
     @FXML
     private TextField txtNumPolissa;
     @FXML
@@ -29,11 +33,11 @@ public class PolissesPaneControler implements Initializable,PanelControler {
     @FXML
     private Button btnInsertPolissa;
     @FXML
-    private ComboBox comboTipus;
+    private ComboBox<String> comboTipus;
     @FXML
     private Button btnModificarPolissa;
     @FXML
-    private TableView tablePolisses;
+    private TableView<Polissa> tablePolisses;
     @FXML
     private Button btnCercarPolissaNif;
     @FXML
@@ -41,15 +45,23 @@ public class PolissesPaneControler implements Initializable,PanelControler {
     @FXML
     private Button btnCercarPolissaVig;
     private FxControler fxControler;
+    private ObservableList<Polissa> displayPolisas = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
         configure();
     }
 
     private void configure() {
+        comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.TERCERS.name(), Polissa.TYPE.TOT_RISC.name()));
+        comboTipus.getSelectionModel().select(0);
 
+//        FxControler.configureReadOnlyTableByClass(tablePolisses, Polissa.class);
+        tablePolisses.setItems(displayPolisas);
+    }
+
+    private Polissa getInputInstance(){
+        return null;
     }
 
 

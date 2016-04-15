@@ -51,7 +51,6 @@ public class ManagerApplication extends Application {
                     alert.showAndWait();
                     splash.close();
                 });
-
             }
         }).start();
     }

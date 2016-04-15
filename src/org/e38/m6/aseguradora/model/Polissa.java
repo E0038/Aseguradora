@@ -129,7 +129,7 @@ public class Polissa implements IModelMarker, Serializable {
         return this;
     }
 
-    enum TYPE {
+    public enum TYPE {
         TERCERS, TOT_RISC;
     }
 
