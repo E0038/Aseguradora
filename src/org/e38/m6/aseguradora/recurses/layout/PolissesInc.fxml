@@ -29,7 +29,7 @@
     <DatePicker fx:id="datePickerIniciPolissa" layoutX="179.0" layoutY="110.0" prefHeight="27.0" prefWidth="200.0"/>
     <DatePicker fx:id="datePickerFiPolissa" layoutX="179.0" layoutY="143.0" prefHeight="25.0" prefWidth="200.0"/>
     <Button fx:id="btnInsertPolissa" layoutX="32.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0"
-            prefWidth="125.0" text="Insertar"/>
+            prefWidth="125.0" text="Insertar" onAction="#inserir"/>
     <ComboBox fx:id="comboTipus" layoutX="179.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0"/>
     <Button fx:id="btnModificarPolissa" layoutX="179.0" layoutY="292.0" mnemonicParsing="false" prefHeight="25.0"
             prefWidth="125.0" text="Modificar"/>
@@ -45,9 +45,9 @@
             <opaqueInsets>
                 <Insets/>
             </opaqueInsets>
-            <Button fx:id="btnCercarPolissaNif" mnemonicParsing="false" text="Cercar per NIF"/>
-            <Button fx:id="btnCercarPolissaMatr" mnemonicParsing="false" text="Cercar per Matricula"/>
-            <Button fx:id="btnCercarPolissaVig" mnemonicParsing="false" text="Cercar vigents"/>
+            <Button fx:id="btnCercarPolissaNif" mnemonicParsing="false" text="Cercar per NIF" onAction="#cercarPolisaNif"/>
+            <Button fx:id="btnCercarPolissaMatr" mnemonicParsing="false" text="Cercar per Matricula" onAction="#cercarPolissaMatr"/>
+            <Button fx:id="btnCercarPolissaVig" mnemonicParsing="false" text="Cercar vigents" onAction="#cercarPolissaVig"/>
         </FlowPane>
     </VBox>
     <Label layoutX="32.0" layoutY="209.0" text="Cobertures:">

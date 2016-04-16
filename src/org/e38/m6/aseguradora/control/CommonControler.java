@@ -118,8 +118,24 @@ public class CommonControler implements IManagerControler {
 
     @Override
     public List<Polissa> polissafindVigents() {
-        return dbManager.getEntityManager()
-                .createNamedQuery(Polissa.POLISSA_VIGENTS, Polissa.class)
+        return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_VIGENTS, Polissa.class)
+                .getResultList();
+    }
+
+    public List<Polissa> polissaByClientNif(String nif){
+        return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_BY_NIF, Polissa.class)
+                .setParameter("nif", nif)
+                .getResultList();
+    }
+
+    public List<Polissa> polissaByMatr(String matricula){
+        return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_BY_MATR, Polissa.class)
+                .setParameter("matricula", matricula)
+                .getResultList();
+    }
+
+    public List<Polissa> polissaVig(String matricula){
+        return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_VIGENTS, Polissa.class)
                 .getResultList();
     }
 

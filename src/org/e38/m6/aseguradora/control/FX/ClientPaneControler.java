@@ -52,9 +52,11 @@ public class ClientPaneControler implements Initializable, PanelControler {
 
     @Override
     public void eliminar(ActionEvent actionEvent) {
-        if (!fxControler.delete(getInputClient()))
-            fxControler.showError("No se pudo eliminar el cliente");
-
+        if (!fxControler.delete(getInputClient())){
+            fxControler.showError("No s'ha pogut eliminar el client");
+        }else{
+            fxControler.showConfirmation("Client eliminat");
+        }
     }
 
     @Override
@@ -67,9 +69,9 @@ public class ClientPaneControler implements Initializable, PanelControler {
     public void inserir(ActionEvent actionEvent) {
         Client client = getInputClient();
         if (!fxControler.insert(client)) {
-            fxControler.showError("No se pudo insertar el cliente");
+            fxControler.showError("No s'ha pogut insertar el client");
         }else {
-
+            fxControler.showError("Client insertat");
         }
     }
 

@@ -41,6 +41,7 @@ public class FxControler extends CommonControler implements Initializable {
     public ScrollPane containerPanel;
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
+    private Alert confirmationAlerter = new Alert(Alert.AlertType.INFORMATION);
 
     @Deprecated
     public static <T extends IModelMarker> void configureReadOnlyTableByClass(TableView<T> table, Class<T> modelClass) {
@@ -100,6 +101,11 @@ public class FxControler extends CommonControler implements Initializable {
     public void showError(String msg) {
         errorAlerter.setContentText(msg);
         errorAlerter.showAndWait();
+    }
+
+    public void showConfirmation(String msg){
+        confirmationAlerter.setContentText(msg);
+        confirmationAlerter.showAndWait();
     }
 
     private void installDb() {

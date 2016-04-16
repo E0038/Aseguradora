@@ -59,7 +59,7 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        configureBindings();
     }
 
     @Override
@@ -74,7 +74,13 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
 
     @Override
     public void inserir(ActionEvent actionEvent) {
+        Vehicle vehicle = createVehicleObject();
 
+        if(fx.insert(vehicle)){
+            fx.showConfirmation("Vehicle insertat");
+        }else{
+            fx.showError("No s'ha pogut insertar el vehicle");
+        }
     }
 
     @Override
@@ -86,6 +92,16 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     public PanelControler setFxControler(FxControler fxControler) {
         fx = fxControler;
         return this;
+    }
+
+    private void configureBindings(){
+        btnInsertarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty().or(txtMatricula.textProperty().length().isNotEqualTo(9)
+                            .or(txtAny.textProperty().isEmpty().or(txtAny.textProperty().isEmpty().or(txtMarca.textProperty().isEmpty()
+                            .or(txtNif.textProperty().isEmpty().or(txtNif.textProperty().isEmpty())))))));
+
+        btnModificarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty().or(txtMatricula.textProperty().length().isNotEqualTo(9)
+                .or(txtAny.textProperty().isEmpty().or(txtAny.textProperty().isEmpty().or(txtMarca.textProperty().isEmpty()
+                        .or(txtNif.textProperty().isEmpty().or(txtNif.textProperty().isEmpty())))))));
     }
 
     public void findVehicle(ActionEvent actionEvent) {
@@ -100,18 +116,15 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     }
 
     public void updateVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7
-                || txtMarca.getText() == null || txtMarca.getText().isEmpty()
-                || txtAny.getText() == null || txtAny.getText().isEmpty()
-                || txtNif.getText() == null || txtNif.getText().length() > 9) {
-
-            fx.showError("Faltan camps per omplir");
-
-        } else {
             Vehicle vehicle = createVehicleObject();
-            fx.update(vehicle);
-        }
+
+            if(fx.update(vehicle)){
+                fx.showConfirmation("Vehicle modificat");
+            }else{
+                fx.showError("No s'ha pogut modificar el vehicle");
+            }
     }
+
 
     private Vehicle createVehicleObject() {
 
@@ -119,29 +132,15 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMatricula(txtMatricula.getText()).setMarcaModel(txtMarca.getText()).setMarcaModel(txtMarca.getText()
-        ).setAnyFabricacio(Integer.parseInt(txtAny.getText())).setPropietari(client);
+        ).setAnyFabricacio(Integer.parseInt(txtAny.getText())).setPropietari(client).setId("8");
 
         return vehicle;
     }
 
-    public void insertVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() == null || txtMatricula.getText().length() != 7
-                || txtMarca.getText() == null || txtMarca.getText().isEmpty()
-                || txtAny.getText() == null || txtAny.getText().isEmpty()
-                || txtNif.getText() == null || txtNif.getText().length() > 9) {
-
-            fx.showError("Faltan camps per omplir");
-
-        } else {
-            Vehicle vehicle = createVehicleObject();
-            fx.insert(vehicle);
-        }
-    }
-
-
     public void fillTable(ActionEvent actionEvent) {
 
         data = FXCollections.observableArrayList();
+        data2 = FXCollections.observableArrayList();
         if (radioClients.isSelected()) {
             TableColumn<Client,String > nif = new TableColumn("NIF");
             TableColumn<Client, String> nom = new TableColumn("Nom");

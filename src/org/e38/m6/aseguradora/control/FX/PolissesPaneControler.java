@@ -13,8 +13,11 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.text.Font;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
+import org.e38.m6.aseguradora.persistance.PersistanceExeception;
 
 import java.net.URL;
+import java.util.Calendar;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -102,7 +105,11 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     }
 
     private void configureBlindings() {
-        btnModificarPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty());
+        btnModificarPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
+                .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
+                .or(txtMatriculaPolissa.textProperty().isEmpty())
+                .or(hasSelectedIdx.not())
+        );
         btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
                 .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
                 .or(txtMatriculaPolissa.textProperty().isEmpty())
@@ -128,7 +135,18 @@ public class PolissesPaneControler implements Initializable, PanelControler {
 
     @Override
     public void inserir(ActionEvent actionEvent) {
+        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())){
+            fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
+        }else{
 
+            Polissa polissa = createPolissaObject();
+
+            if (fxControler.insert(polissa)){
+                fxControler.showConfirmation("Polissa insertada");
+            }else{
+                fxControler.showError("No s'ha pogut insertar la Polissa");
+            }
+        }
     }
 
     @Override
@@ -141,4 +159,65 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         this.fxControler = fxControler;
         return this;
     }
+
+    public void cercarPolisaNif(ActionEvent actionEvent) {
+        if(txtNifPrenedor.getText() == null || txtNifPrenedor.getText().isEmpty()){
+            fxControler.showError("Introdueix un NIF vàlid");
+        }else{
+            displayPolisas.clear();
+            displayPolisas.addAll(fxControler.polissaByClientNif(txtNifPrenedor.getText()));
+            tablePolisses.refresh();
+        }
+
+    }
+
+    public void cercarPolissaMatr(ActionEvent actionEvent) {
+        if(txtMatriculaPolissa.getText() == null || txtMatriculaPolissa.getText().isEmpty()){
+            fxControler.showError("Introdueix una matricula vàlida");
+        }else{
+            displayPolisas.clear();
+            displayPolisas.addAll(fxControler.polissaByMatr(txtMatriculaPolissa.getText()));
+            tablePolisses.refresh();
+        }
+    }
+
+    public void cercarPolissaVig(ActionEvent actionEvent) {
+        displayPolisas.clear();
+        displayPolisas.addAll(fxControler.polissafindVigents());
+        tablePolisses.refresh();
+    }
+
+    public void updatePolissa(){
+        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())){
+            fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
+        }else{
+
+            Polissa polissa = createPolissaObject();
+
+            if (fxControler.update(polissa)){
+                fxControler.showConfirmation("Polissa modificada");
+            }else{
+                fxControler.showError("No s'ha pogut modificar la Polissa");
+            }
+        }
+    }
+
+    private Polissa createPolissaObject(){
+        Polissa polissa = new Polissa();
+        Calendar inici = Calendar.getInstance();
+        Calendar fi = Calendar.getInstance();
+
+        inici.set(datePickerIniciPolissa.getValue().getYear(), datePickerIniciPolissa.getValue().getMonthValue() + 1,
+                datePickerIniciPolissa.getValue().getDayOfMonth());
+
+        fi.set(datePickerFiPolissa.getValue().getYear(), datePickerFiPolissa.getValue().getMonthValue() + 1,
+                datePickerFiPolissa.getValue().getDayOfMonth());
+
+        polissa.setPolisaNum(txtNumPolissa.getText()).setPrenedor(fxControler.findByClientNif(txtNifPrenedor.getText()))
+                .setVehicle(fxControler.findByVeicleMatricula(txtMatriculaPolissa.getText())).setDataInici(inici)
+                .setDataFi(fi).setTipus(comboTipus.getValue()).setCobertures(listCovertures.getSelectionModel().getSelectedItems());
+
+        return polissa;
+    }
+
 }

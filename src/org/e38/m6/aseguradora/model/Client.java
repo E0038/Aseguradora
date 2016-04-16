@@ -20,7 +20,7 @@ public class Client implements IModelMarker,Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
-    @Column(nullable = false, unique = true)
+    @Column(length=9, nullable = false, unique = true)
     private String nif;
     @SuppressWarnings("JpaDataSourceORMInspection")
     @Column(name = "nomClient")

@@ -14,11 +14,16 @@ import java.util.List;
         {@NamedQuery(name = Polissa.POLISSA_VIGENTS, query = "SELECT P FROM Polissa P WHERE P.dataFi > current_date ")
                 , @NamedQuery(name = Polissa.POLISSE_BY_CLIENT, query = "SELECT P FROM Polissa P WHERE P.prenedor = :client ")
                 , @NamedQuery(name = Polissa.POLISSA_BY_VEICLE, query = "SELECT P FROM Polissa P WHERE P.vehicle = :vehicle")
+                , @NamedQuery(name = Polissa.POLISSA_BY_NIF, query = "SELECT P FROM Polissa P WHERE P.prenedor.nif = :nif")
+                , @NamedQuery(name = Polissa.POLISSA_BY_MATR, query = "SELECT P FROM Polissa P WHERE P.vehicle.matricula = :matricula"
+        )
         })
 public class Polissa implements IModelMarker, Serializable {
     public static final String POLISSA_VIGENTS = "PolissaVigents";
     public static final String POLISSE_BY_CLIENT = "PolisseByClient";
     public static final String POLISSA_BY_VEICLE = "PolissaByVeicle";
+    public static final String POLISSA_BY_NIF = "PolissaByNif";
+    public static final String POLISSA_BY_MATR = "PolissaByMatr";
     public static final String POLISSA_SEQ = "polissa_seq";
     public static final String PRENADOR_ID = "prenador_id";
     @Id
