@@ -14,7 +14,6 @@ public class RegisterDialog extends LoginDialog {
     public static final String KEY_MAIL = "MAIL";
     public static final int PASSWORD_MIN_LENGTH = 8;
     private TextField mail;
-    private MatchingProperty matchingProperty;
 
 
     public RegisterDialog() {
@@ -35,9 +34,6 @@ public class RegisterDialog extends LoginDialog {
 
     @Override
     protected void configureValidation() {
-        matchingProperty = new MatchingProperty();
-        matchingProperty.bind(mail.textProperty());
-
         getLoginButton().disableProperty().bind(
                 getPassword().textProperty().length().lessThan(PASSWORD_MIN_LENGTH)
                         .or(getUsername().textProperty().isEmpty())
