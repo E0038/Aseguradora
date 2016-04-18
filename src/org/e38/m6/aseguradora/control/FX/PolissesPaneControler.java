@@ -13,11 +13,9 @@ import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.text.Font;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
-import org.e38.m6.aseguradora.persistance.PersistanceExeception;
 
 import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -81,17 +79,11 @@ public class PolissesPaneControler implements Initializable, PanelControler {
                     // new Integer para prevenir que lanze el metodo remove(int idx) envez de remove(Object e)
                     selectedCovertures.remove(new Integer(listCovertures.getItems().indexOf(item)));
                 }
-                System.out.println(selectedCovertures);
             });
 
             return observable;
         }));
-        selectedCovertures.addListener(new ListChangeListener<Integer>() {
-            @Override
-            public void onChanged(Change<? extends Integer> c) {
-                hasSelectedIdx.set(!selectedCovertures.isEmpty());
-            }
-        });
+        selectedCovertures.addListener((ListChangeListener<Integer>) c -> hasSelectedIdx.set(!selectedCovertures.isEmpty()));
         configureTable();//
         configureBlindings();
 
@@ -106,15 +98,21 @@ public class PolissesPaneControler implements Initializable, PanelControler {
 
     private void configureBlindings() {
         btnModificarPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
-                .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
+                .or(txtNifPrenedor.textProperty().length().isNotEqualTo(9))
                 .or(txtMatriculaPolissa.textProperty().isEmpty())
+                .or(datePickerFiPolissa.valueProperty().isNull())
+                .or(datePickerIniciPolissa.valueProperty().isNull())
                 .or(hasSelectedIdx.not())
         );
         btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
-                .or(txtNifPrenedor.textProperty().length().isEqualTo(9).not())
+                .or(txtNifPrenedor.textProperty().length().isNotEqualTo(9))
                 .or(txtMatriculaPolissa.textProperty().isEmpty())
+                .or(datePickerFiPolissa.valueProperty().isNull())
+                .or(datePickerIniciPolissa.valueProperty().isNull())
                 .or(hasSelectedIdx.not())
         );
+        btnCercarPolissaNif.disableProperty().bind(txtNifPrenedor.textProperty().length().isNotEqualTo(9));
+        btnCercarPolissaMatr.disableProperty().bind(txtMatriculaPolissa.textProperty().isEmpty());
 
     }
 
@@ -135,15 +133,15 @@ public class PolissesPaneControler implements Initializable, PanelControler {
 
     @Override
     public void inserir(ActionEvent actionEvent) {
-        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())){
+        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())) {
             fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
-        }else{
+        } else {
 
             Polissa polissa = createPolissaObject();
 
-            if (fxControler.insert(polissa)){
+            if (fxControler.insert(polissa)) {
                 fxControler.showConfirmation("Polissa insertada");
-            }else{
+            } else {
                 fxControler.showError("No s'ha pogut insertar la Polissa");
             }
         }
@@ -160,49 +158,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         return this;
     }
 
-    public void cercarPolisaNif(ActionEvent actionEvent) {
-        if(txtNifPrenedor.getText() == null || txtNifPrenedor.getText().isEmpty()){
-            fxControler.showError("Introdueix un NIF vàlid");
-        }else{
-            displayPolisas.clear();
-            displayPolisas.addAll(fxControler.polissaByClientNif(txtNifPrenedor.getText()));
-            tablePolisses.refresh();
-        }
-
-    }
-
-    public void cercarPolissaMatr(ActionEvent actionEvent) {
-        if(txtMatriculaPolissa.getText() == null || txtMatriculaPolissa.getText().isEmpty()){
-            fxControler.showError("Introdueix una matricula vàlida");
-        }else{
-            displayPolisas.clear();
-            displayPolisas.addAll(fxControler.polissaByMatr(txtMatriculaPolissa.getText()));
-            tablePolisses.refresh();
-        }
-    }
-
-    public void cercarPolissaVig(ActionEvent actionEvent) {
-        displayPolisas.clear();
-        displayPolisas.addAll(fxControler.polissafindVigents());
-        tablePolisses.refresh();
-    }
-
-    public void updatePolissa(){
-        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())){
-            fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
-        }else{
-
-            Polissa polissa = createPolissaObject();
-
-            if (fxControler.update(polissa)){
-                fxControler.showConfirmation("Polissa modificada");
-            }else{
-                fxControler.showError("No s'ha pogut modificar la Polissa");
-            }
-        }
-    }
-
-    private Polissa createPolissaObject(){
+    private Polissa createPolissaObject() {
         Polissa polissa = new Polissa();
         Calendar inici = Calendar.getInstance();
         Calendar fi = Calendar.getInstance();
@@ -218,6 +174,48 @@ public class PolissesPaneControler implements Initializable, PanelControler {
                 .setDataFi(fi).setTipus(comboTipus.getValue()).setCobertures(listCovertures.getSelectionModel().getSelectedItems());
 
         return polissa;
+    }
+
+    public void cercarPolisaNif(ActionEvent actionEvent) {
+        if (txtNifPrenedor.getText() == null || txtNifPrenedor.getText().isEmpty()) {
+            fxControler.showError("Introdueix un NIF vàlid");
+        } else {
+            displayPolisas.clear();
+            displayPolisas.addAll(fxControler.polissaByClientNif(txtNifPrenedor.getText()));
+            tablePolisses.refresh();
+        }
+
+    }
+
+    public void cercarPolissaMatr(ActionEvent actionEvent) {
+        if (txtMatriculaPolissa.getText() == null || txtMatriculaPolissa.getText().isEmpty()) {
+            fxControler.showError("Introdueix una matricula vàlida");
+        } else {
+            displayPolisas.clear();
+            displayPolisas.addAll(fxControler.polissaByMatr(txtMatriculaPolissa.getText()));
+            tablePolisses.refresh();
+        }
+    }
+
+    public void cercarPolissaVig(ActionEvent actionEvent) {
+        displayPolisas.clear();
+        displayPolisas.addAll(fxControler.polissafindVigents());
+        tablePolisses.refresh();
+    }
+
+    public void updatePolissa() {
+        if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())) {
+            fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
+        } else {
+
+            Polissa polissa = createPolissaObject();
+
+            if (fxControler.update(polissa)) {
+                fxControler.showConfirmation("Polissa modificada");
+            } else {
+                fxControler.showError("No s'ha pogut modificar la Polissa");
+            }
+        }
     }
 
 }

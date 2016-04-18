@@ -103,7 +103,7 @@ public class FxControler extends CommonControler implements Initializable {
         errorAlerter.showAndWait();
     }
 
-    public void showConfirmation(String msg){
+    public void showConfirmation(String msg) {
         confirmationAlerter.setContentText(msg);
         confirmationAlerter.showAndWait();
     }
@@ -114,10 +114,15 @@ public class FxControler extends CommonControler implements Initializable {
 
     public void onCloseResquest(WindowEvent windowEvent) {
         Platform.exit();
-        getDbManager().getEntityManager().getTransaction().begin();
-        getDbManager().getEntityManager().flush();
-        getDbManager().getEntityManager().getTransaction().commit();
-        System.exit(0);
+        try {
+            getDbManager().getEntityManager().getTransaction().begin();
+            getDbManager().getEntityManager().flush();
+            getDbManager().getEntityManager().getTransaction().commit();
+            System.exit(0);
+        } catch (Throwable e) {
+            System.exit(-1);
+        }
+
     }
 
     public void registerAction(ActionEvent actionEvent) {

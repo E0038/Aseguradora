@@ -25,7 +25,8 @@ public class Vehicle implements IModelMarker, Serializable {
     @SuppressWarnings("DuplicateStringLiteralInspection")
     @SequenceGenerator(name = "veicle_seq", sequenceName = "seq_veicle")
     @GeneratedValue(generator = "veicle_seq", strategy = GenerationType.SEQUENCE)
-    private String id;
+    @Id
+    private Integer id;
 
     @Column(length = 7, nullable = false, unique = true, name = MATRICULA_COLUMN)
     private String matricula;
@@ -70,12 +71,11 @@ public class Vehicle implements IModelMarker, Serializable {
         return this;
     }
 
-    @Id
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Vehicle setId(String id) {
+    public Vehicle setId(Integer id) {
         this.id = id;
         return this;
     }

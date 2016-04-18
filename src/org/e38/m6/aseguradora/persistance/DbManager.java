@@ -65,8 +65,8 @@ public class DbManager {
     }
 
     public void prepareEnv() {
-//        entityManager.setProperty();//todo set mode drop-create
-//        // TODO: 4/11/16 create mock instances
+//        entityManager.setProperty();//todo set mode drop-and-create
+//        // TODO: 4/11/16 create and delete mock instances
 //        entityManager.setProperty();// TODO: 4/11/16 set mode update
     }
 
@@ -94,6 +94,7 @@ public class DbManager {
             entityManager.getTransaction().commit();
 
         } catch (Exception e) {
+//            e.printStackTrace();
             throw new PersistanceExeception(e.getMessage());
         }
     }

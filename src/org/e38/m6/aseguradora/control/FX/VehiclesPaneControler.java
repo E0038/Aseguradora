@@ -1,6 +1,5 @@
 package org.e38.m6.aseguradora.control.FX;
 
-import com.sun.rowset.internal.Row;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,10 +13,6 @@ import org.e38.m6.aseguradora.model.Client;
 import org.e38.m6.aseguradora.model.Vehicle;
 import org.e38.m6.aseguradora.persistance.NoSuchEntityExeception;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -27,11 +22,11 @@ import java.util.ResourceBundle;
  */
 public class VehiclesPaneControler implements Initializable, PanelControler {
 
+    private FxControler fx;
     @FXML
     private ToggleGroup select;
     @FXML
     private Button btnCercar;
-    FxControler fx;
     @FXML
     private TableView tableVehiclesClients;
     @FXML
@@ -62,6 +57,20 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
         configureBindings();
     }
 
+    private void configureBindings() {
+        btnInsertarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty()
+                .or(txtNif.textProperty().length().isNotEqualTo(9))
+                .or(txtAny.textProperty().isEmpty())
+                .or(txtMarca.textProperty().isEmpty())
+        );
+
+        btnModificarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty()
+                .or(txtNif.textProperty().length().isNotEqualTo(9))
+                .or(txtAny.textProperty().isEmpty())
+                .or(txtMarca.textProperty().isEmpty())
+        );
+    }
+
     @Override
     public void eliminar(ActionEvent actionEvent) {
 
@@ -75,10 +84,9 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
     @Override
     public void inserir(ActionEvent actionEvent) {
         Vehicle vehicle = createVehicleObject();
-
-        if(fx.insert(vehicle)){
+        if (fx.insert(vehicle)) {
             fx.showConfirmation("Vehicle insertat");
-        }else{
+        } else {
             fx.showError("No s'ha pogut insertar el vehicle");
         }
     }
@@ -94,47 +102,36 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
         return this;
     }
 
-    private void configureBindings(){
-        btnInsertarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty().or(txtMatricula.textProperty().length().isNotEqualTo(9)
-                            .or(txtAny.textProperty().isEmpty().or(txtAny.textProperty().isEmpty().or(txtMarca.textProperty().isEmpty()
-                            .or(txtNif.textProperty().isEmpty().or(txtNif.textProperty().isEmpty())))))));
-
-        btnModificarVehicle.disableProperty().bind(txtMatricula.textProperty().isEmpty().or(txtMatricula.textProperty().length().isNotEqualTo(9)
-                .or(txtAny.textProperty().isEmpty().or(txtAny.textProperty().isEmpty().or(txtMarca.textProperty().isEmpty()
-                        .or(txtNif.textProperty().isEmpty().or(txtNif.textProperty().isEmpty())))))));
-    }
-
-    public void findVehicle(ActionEvent actionEvent) {
-        if (txtMatricula.getText() != null && txtMatricula.getText() != "" && txtMatricula.getText().length() == 7){
-            Vehicle vehicle = fx.findByVeicleMatricula(txtMatricula.getText());
-            txtMarca.setText(vehicle.getMarcaModel());
-            txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
-            txtNif.setText(vehicle.getPropietari().getNif());
-        }else{
-            fx.showError("La matrícula és incorrecta");
-        }
-    }
-
-    public void updateVehicle(ActionEvent actionEvent) {
-            Vehicle vehicle = createVehicleObject();
-
-            if(fx.update(vehicle)){
-                fx.showConfirmation("Vehicle modificat");
-            }else{
-                fx.showError("No s'ha pogut modificar el vehicle");
-            }
-    }
-
-
     private Vehicle createVehicleObject() {
 
         Client client = fx.findByClientNif(txtNif.getText());
         Vehicle vehicle = new Vehicle();
 
         vehicle.setMatricula(txtMatricula.getText()).setMarcaModel(txtMarca.getText()).setMarcaModel(txtMarca.getText()
-        ).setAnyFabricacio(Integer.parseInt(txtAny.getText())).setPropietari(client).setId("8");
+        ).setAnyFabricacio(Integer.parseInt(txtAny.getText())).setPropietari(client);
 
         return vehicle;
+    }
+
+    public void findVehicle(ActionEvent actionEvent) {
+        if (txtMatricula.getText() != null && txtMatricula.getText() != "" && txtMatricula.getText().length() == 7) {
+            Vehicle vehicle = fx.findByVeicleMatricula(txtMatricula.getText());
+            txtMarca.setText(vehicle.getMarcaModel());
+            txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
+            txtNif.setText(vehicle.getPropietari().getNif());
+        } else {
+            fx.showError("La matrícula és incorrecta");
+        }
+    }
+
+    public void updateVehicle(ActionEvent actionEvent) {
+        Vehicle vehicle = createVehicleObject();
+
+        if (fx.update(vehicle)) {
+            fx.showConfirmation("Vehicle modificat");
+        } else {
+            fx.showError("No s'ha pogut modificar el vehicle");
+        }
     }
 
     public void fillTable(ActionEvent actionEvent) {
@@ -142,8 +139,8 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
         data = FXCollections.observableArrayList();
         data2 = FXCollections.observableArrayList();
         if (radioClients.isSelected()) {
-            TableColumn<Client,String > nif = new TableColumn("NIF");
-            TableColumn<Client, String> nom = new TableColumn("Nom");
+            TableColumn<Client, String> nif = new TableColumn<>("NIF");
+            TableColumn<Client, String> nom = new TableColumn<>("Nom");
             nif.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNif()));
             nom.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getNom()));
             tableVehiclesClients.getColumns().clear();
@@ -177,22 +174,22 @@ public class VehiclesPaneControler implements Initializable, PanelControler {
             } catch (NoSuchEntityExeception noSuchEntityExeception) {
                 noSuchEntityExeception.printStackTrace();
             }
-        }else{
+        } else {
             fx.showError("Selecciona vehicles o clients");
         }
     }
 
     public void volcarDatosFila(Event event) {
-        if (radioClients.isSelected()){
+        if (radioClients.isSelected()) {
             Client client = (Client) tableVehiclesClients.getSelectionModel().getSelectedItem();
             txtNif.setText(client.getNif());
 
-        } else if (radioVehicle.isSelected()){
+        } else if (radioVehicle.isSelected()) {
             Vehicle vehicle = (Vehicle) tableVehiclesClients.getSelectionModel().getSelectedItem();
             txtMatricula.setText(vehicle.getMatricula());
             txtAny.setText(String.valueOf(vehicle.getAnyFabricacio()));
             txtMarca.setText(vehicle.getMarcaModel());
-        }else{
+        } else {
             fx.showError("Selecciona vehicles o clients");
         }
     }

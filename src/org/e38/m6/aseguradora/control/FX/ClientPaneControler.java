@@ -71,7 +71,7 @@ public class ClientPaneControler implements Initializable, PanelControler {
         if (!fxControler.insert(client)) {
             fxControler.showError("No s'ha pogut insertar el client");
         }else {
-            fxControler.showError("Client insertat");
+            fxControler.showConfirmation("Client insertat");
         }
     }
 
