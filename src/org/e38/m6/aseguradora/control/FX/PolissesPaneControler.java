@@ -15,8 +15,7 @@ import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
 
 import java.net.URL;
-import java.util.Calendar;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Created by sergi on 4/8/16.
@@ -25,6 +24,30 @@ import java.util.ResourceBundle;
  * cerques de pòlisses d'un client, d'un vehicle i vigents.
  */
 public class PolissesPaneControler implements Initializable, PanelControler {
+    @FXML
+    private TableColumn colID;
+    @FXML
+    private TableColumn colNumPoli;
+    @FXML
+    private TableColumn colClientID;
+    @FXML
+    private TableColumn colVehicleID;
+    @FXML
+    private TableColumn colDataInici;
+    @FXML
+    private TableColumn colDataFi;
+    @FXML
+    private TableColumn colPrima;
+    @FXML
+    private TableColumn colTipus;
+    @FXML
+    private TableColumn colCobertures;
+    @FXML
+    private TableColumn colCheckRobatori;
+    @FXML
+    private TableColumn colCheckInicendi;
+    @FXML
+    private TableColumn colCheckVidres;
     @FXML
     private ListView<Boolean> listChecks;
     @FXML
@@ -57,7 +80,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     private Button btnCercarPolissaVig;
     private FxControler fxControler;
     private ObservableList<Polissa> displayPolisas = FXCollections.observableArrayList();
-    private ObservableList<Integer> selectedCovertures = FXCollections.observableArrayList();
+    private ObservableList<Polissa.Cobertura> selectedCovertures = FXCollections.observableArrayList();
     private BooleanProperty hasSelectedIdx = new SimpleBooleanProperty(false);
 
     @Override
@@ -74,26 +97,27 @@ public class PolissesPaneControler implements Initializable, PanelControler {
 
             observable.addListener((obs, wasSelected, isNowSelected) -> {
                 if (isNowSelected) {
-                    selectedCovertures.add(listCovertures.getItems().indexOf(item));
+                    selectedCovertures.add(item);
                 } else {
                     // new Integer para prevenir que lanze el metodo remove(int idx) envez de remove(Object e)
-                    selectedCovertures.remove(new Integer(listCovertures.getItems().indexOf(item)));
+                    selectedCovertures.remove(item);
                 }
             });
 
             return observable;
         }));
-        selectedCovertures.addListener((ListChangeListener<Integer>) c -> hasSelectedIdx.set(!selectedCovertures.isEmpty()));
-        configureTable();//
+        selectedCovertures.addListener((ListChangeListener<Polissa.Cobertura>) c -> hasSelectedIdx.set(!selectedCovertures.isEmpty()));
+
+        configureTable();// TODO: 4/18/16
         configureBlindings();
 
     }
 
     private void configureTable() {
-        tablePolisses.getColumns().addAll();
+        tablePolisses.getColumns().clear();
+
+
         tablePolisses.setItems(displayPolisas);
-
-
     }
 
     private void configureBlindings() {
@@ -169,10 +193,17 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         fi.set(datePickerFiPolissa.getValue().getYear(), datePickerFiPolissa.getValue().getMonthValue() + 1,
                 datePickerFiPolissa.getValue().getDayOfMonth());
 
-        polissa.setPolisaNum(txtNumPolissa.getText()).setPrenedor(fxControler.findByClientNif(txtNifPrenedor.getText()))
-                .setVehicle(fxControler.findByVeicleMatricula(txtMatriculaPolissa.getText())).setDataInici(inici)
-                .setDataFi(fi).setTipus(comboTipus.getValue()).setCobertures(listCovertures.getSelectionModel().getSelectedItems());
+        List<Polissa.Cobertura> coberturaList = new ArrayList<>();
+        Collections.copy(coberturaList, selectedCovertures);
 
+        polissa.setPolisaNum(txtNumPolissa.getText())
+                .setPrenedor(fxControler.findByClientNif(txtNifPrenedor.getText()))
+                .setVehicle(fxControler.findByVeicleMatricula(txtMatriculaPolissa.getText()))
+                .setDataInici(inici)
+                .setDataFi(fi)
+                .setTipus(comboTipus.getValue())
+                //copy list
+                .setCobertures(coberturaList);
         return polissa;
     }
 
