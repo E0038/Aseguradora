@@ -16,7 +16,7 @@ import java.util.Map;
 public class LoginDialog extends Dialog<Map<String, String>> {
     public static final String KEY_USERNAME = "USERNAME";
     public static final String KEY_PASSWORD = "PASSWORD";
-    private final ButtonType loginButtonType = new ButtonType("Login", ButtonBar.ButtonData.OK_DONE);
+    protected ButtonType loginButtonType = new ButtonType("Login", ButtonBar.ButtonData.OK_DONE);
     protected String title = "Login Dialog", headerText = "Enter your login data";
     private TextField password;
     private TextField username;

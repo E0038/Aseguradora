@@ -2,6 +2,7 @@ package org.e38.m6.aseguradora.control;
 
 import org.e38.m6.aseguradora.model.*;
 import org.e38.m6.aseguradora.persistance.DbManager;
+import org.e38.m6.aseguradora.persistance.PersistanceExeception;
 
 import javax.persistence.PersistenceException;
 import java.util.List;
@@ -28,23 +29,24 @@ public class CommonControler implements IManagerControler {
     }
 
     @Override
-    public void login(String user, String password) throws UserNotFoundException, InvalidCredencialsException {
+    public Usuari login(String user, String password) throws UserNotFoundException, InvalidCredencialsException {
         if (!checkInputStrings(user, password))
             throw new InvalidCredencialsException("the input contains invalid words");
         password = encript(password);
-        Usuari usuari = new Usuari().setName(user).setPassword(password);
+        Usuari usuari = new Usuari().setName(user).setPassword(encript(password));
         Usuari dbUser = dbManager.getEntityManager().find(Usuari.class, user);
         if (dbUser == null) throw new UserNotFoundException("usario no encontrado");
         else if (!usuari.getPassword().equals(dbUser.getPassword()))
             throw new InvalidCredencialsException("password not match");
+        return dbUser;
     }
 
     private String encript(String password) {
-        return password;
+        return password;// TODO: 4/18/16 add ShaPass implementation
     }
 
     @Override
-    public void register(String username, String mail, String password) throws InvalidCredencialsException, PersistenceException {
+    public Usuari register(String username, String mail, String password) throws InvalidCredencialsException, PersistenceException {
         if (!checkInputStrings(username, password))
             throw new InvalidCredencialsException("the input contains invalid words");
         if (password.length() < MIN_PASSWORD_LENGTH || !mail.matches(MAIL_REG)) {
@@ -55,7 +57,14 @@ public class CommonControler implements IManagerControler {
                 > 0) {
             throw new InvalidCredencialsException("user exist");
         }
-        dbManager.getEntityManager().persist(new Usuari().setName(username).setPassword(password));
+
+        try {
+            Usuari usuari =new Usuari().setName(username).setPassword(password);
+            dbManager.insert(usuari);
+            return usuari;
+        } catch (PersistanceExeception persistanceExeception) {
+            throw new InvalidCredencialsException("error creating user");
+        }
 
     }
 
@@ -103,12 +112,6 @@ public class CommonControler implements IManagerControler {
                 .getResultList();
     }
 
-    public Client findByClientNif(String nif) {
-        return dbManager.getEntityManager().createNamedQuery(Client.FIND_CLIENT_BY_NIF, Client.class)
-                .setParameter("nif", nif)
-                .getSingleResult();
-    }
-
     @Override
     public Polissa findByPolisas(Client client) {
         return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSE_BY_CLIENT, Polissa.class)
@@ -122,19 +125,25 @@ public class CommonControler implements IManagerControler {
                 .getResultList();
     }
 
-    public List<Polissa> polissaByClientNif(String nif){
+    public Client findByClientNif(String nif) {
+        return dbManager.getEntityManager().createNamedQuery(Client.FIND_CLIENT_BY_NIF, Client.class)
+                .setParameter("nif", nif)
+                .getSingleResult();
+    }
+
+    public List<Polissa> polissaByClientNif(String nif) {
         return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_BY_NIF, Polissa.class)
                 .setParameter("nif", nif)
                 .getResultList();
     }
 
-    public List<Polissa> polissaByMatr(String matricula){
+    public List<Polissa> polissaByMatr(String matricula) {
         return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_BY_MATR, Polissa.class)
                 .setParameter("matricula", matricula)
                 .getResultList();
     }
 
-    public List<Polissa> polissaVig(String matricula){
+    public List<Polissa> polissaVig(String matricula) {
         return dbManager.getEntityManager().createNamedQuery(Polissa.POLISSA_VIGENTS, Polissa.class)
                 .getResultList();
     }

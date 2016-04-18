@@ -1,44 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-
-<VBox fx:id="root" prefHeight="450.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FxControler">
-   <children>
-       <MenuBar>
-          <menus>
-              <Menu mnemonicParsing="false" text="Categorias">
-                 <items>
-                     <Menu mnemonicParsing="false" text="Categoria Activa">
-                        <items>
-                            <MenuItem mnemonicParsing="false" onAction="#setCategoriaClient" text="Clients" />
-                            <MenuItem mnemonicParsing="false" onAction="#setCategoriaVehicles" text="Vehicles" />
-                            <MenuItem mnemonicParsing="false" onAction="#setCategoriaPolisa" text="Polisa" />
-                        </items>
-                     </Menu>
-                 </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Identificarse">
-                 <items>
-                     <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loginAction" text="Log in" />
-                     <MenuItem fx:id="itemRegister" mnemonicParsing="false" onAction="#registerAction" text="Register" />
-                 </items>
-              </Menu>
-              <Menu mnemonicParsing="false" text="Help">
-                 <items>
-                     <MenuItem mnemonicParsing="false" text="About" />
-                 </items>
-              </Menu>
-          </menus>
-       </MenuBar>
-       <BorderPane prefHeight="58.0" prefWidth="587.0">
-           <center>
-               <ComboBox fx:id="comboSouce" prefWidth="150.0" visible="false" BorderPane.alignment="CENTER" />
-           </center>
-       </BorderPane>
-       <ScrollPane fx:id="containerPanel" prefHeight="350.0" />
-   </children>
+<VBox fx:id="root" prefHeight="450.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FxControler">
+    <MenuBar>
+        <Menu mnemonicParsing="false" text="Categorias">
+            <Menu mnemonicParsing="false" text="Categoria Activa" fx:id="menuCategoriaActiva">
+                <MenuItem mnemonicParsing="false" onAction="#setCategoriaClient" text="Clients"/>
+                <MenuItem mnemonicParsing="false" onAction="#setCategoriaVehicles" text="Vehicles"/>
+                <MenuItem mnemonicParsing="false" onAction="#setCategoriaPolisa" text="Polisa"/>
+            </Menu>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Identificarse">
+            <MenuItem fx:id="itemLogin" mnemonicParsing="false" onAction="#loginAction" text="Log in"/>
+            <MenuItem fx:id="itemRegister" mnemonicParsing="false" onAction="#registerAction" text="Register"/>
+            <MenuItem text="log out" onAction="#logOut"/>
+        </Menu>
+        <Menu mnemonicParsing="false" text="Help">
+            <MenuItem mnemonicParsing="false" text="About" onAction="#showAbout"/>
+        </Menu>
+    </MenuBar>
+    <BorderPane prefHeight="58.0" prefWidth="587.0">
+        <center>
+            <ComboBox fx:id="comboSouce" prefWidth="150.0" visible="false" BorderPane.alignment="CENTER"/>
+        </center>
+    </BorderPane>
+    <ScrollPane fx:id="containerPanel" prefHeight="350.0"/>
 </VBox>

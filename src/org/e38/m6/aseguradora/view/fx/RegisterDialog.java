@@ -1,5 +1,6 @@
 package org.e38.m6.aseguradora.view.fx;
 
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,11 +26,18 @@ public class RegisterDialog extends LoginDialog {
     }
 
     @Override
+    protected void configureDialog() {
+        loginButtonType = new ButtonType("Register", ButtonBar.ButtonData.OK_DONE);
+        super.configureDialog();
+    }
+
+    @Override
     protected void configureGrid(GridPane grid) {
         super.configureGrid(grid);
         grid.add(new Label("email"), 3, 0);
         mail = new TextField();
         grid.add(mail, 3, 1);
+        mail.setStyle("-fx-border-color: red;");
     }
 
     @Override
@@ -37,18 +45,17 @@ public class RegisterDialog extends LoginDialog {
         getLoginButton().disableProperty().bind(
                 getPassword().textProperty().length().lessThan(PASSWORD_MIN_LENGTH)
                         .or(getUsername().textProperty().isEmpty())
-//                .or(mail.textFormatterProperty().v)
-//                        .or(matchingProperty.matches("[\\w.]+[@][\\w.]+[.][\\w]{2,10}").not())
-//                        .or(new SimpleBooleanProperty(mail.textProperty().get().matches("[\\w.]+[@][\\w.]+[.][\\w]{2,10}"))
         );
 
         mail.textProperty().addListener((observable, oldValue, newValue) -> {
             boolean chReg = newValue.matches("[\\w.]+[@][\\w.]+[.][\\w]{2,10}");
-            if (!getLoginButton().isDisabled()) {
-                getLoginButton().setDisable(!chReg);
+            if (!chReg) {
+                mail.setStyle("-fx-border-color: red ;");
+            } else {
+                mail.setStyle("-fx-border-color: inherit ;");
             }
-            // TODO: 4/7/16 red labels inidicators
         });
+
     }
 
     @Override

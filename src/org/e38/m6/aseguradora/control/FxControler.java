@@ -1,6 +1,8 @@
 package org.e38.m6.aseguradora.control;
 
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -12,6 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.WindowEvent;
 import org.e38.m6.aseguradora.control.FX.PanelControler;
 import org.e38.m6.aseguradora.model.IModelMarker;
+import org.e38.m6.aseguradora.model.Usuari;
 import org.e38.m6.aseguradora.persistance.DbManager;
 import org.e38.m6.aseguradora.view.fx.LoginDialog;
 import org.e38.m6.aseguradora.view.fx.RegisterDialog;
@@ -39,9 +42,11 @@ public class FxControler extends CommonControler implements Initializable {
     public ComboBox<String> comboSouce;
     public VBox root;
     public ScrollPane containerPanel;
+    public Menu menuCategoriaActiva;
     private Map<String, URL> includePanels = new HashMap<>();
     private Alert errorAlerter = new Alert(Alert.AlertType.ERROR);
     private Alert confirmationAlerter = new Alert(Alert.AlertType.INFORMATION);
+    private ObjectProperty<Usuari> usuariProperty = new SimpleObjectProperty<>(null);
 
     @Deprecated
     public static <T extends IModelMarker> void configureReadOnlyTableByClass(TableView<T> table, Class<T> modelClass) {
@@ -67,6 +72,8 @@ public class FxControler extends CommonControler implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         mapIncludes();
         configure();
+        //noinspection DuplicateStringLiteralInspection
+        containerPanel.setContent(new Label("No content"));
     }
 
     private void mapIncludes() {
@@ -79,6 +86,8 @@ public class FxControler extends CommonControler implements Initializable {
         errorAlerter.setTitle("ERROR");
         comboSouce.setItems(FXCollections.observableArrayList(includePanels.keySet()));
         comboSouce.setOnAction(this::comboChange);
+        comboSouce.disableProperty().bind(usuariProperty.isNull());
+        menuCategoriaActiva.getParentMenu().disableProperty().bind(usuariProperty.isNull());
     }
 
     private void comboChange(javafx.event.Event actionEvent) {
@@ -128,7 +137,7 @@ public class FxControler extends CommonControler implements Initializable {
     public void registerAction(ActionEvent actionEvent) {
         new RegisterDialog().showAndWait().ifPresent(regMap -> {
             try {
-                register(regMap.get(KEY_USERNAME), regMap.get(KEY_MAIL), regMap.get(KEY_PASSWORD));
+                usuariProperty.set(register(regMap.get(KEY_USERNAME), regMap.get(KEY_MAIL), regMap.get(KEY_PASSWORD)));
             } catch (InvalidCredencialsException e) {
                 showError(e.getMessage());
             }
@@ -138,7 +147,7 @@ public class FxControler extends CommonControler implements Initializable {
     public void loginAction(ActionEvent actionEvent) {
         new LoginDialog().showAndWait().ifPresent(logMap -> {
             try {
-                login(logMap.get(KEY_USERNAME), logMap.get(KEY_PASSWORD));
+                usuariProperty.set(login(logMap.get(KEY_USERNAME), logMap.get(KEY_PASSWORD)));
             } catch (UserNotFoundException | InvalidCredencialsException e) {
                 showError("contraseña o usario incorrecto");
             }
@@ -155,5 +164,19 @@ public class FxControler extends CommonControler implements Initializable {
 
     public void setCategoriaClient(ActionEvent actionEvent) {
         changeCategoria(KEY_CLIENT);
+    }
+
+    public void logOut(ActionEvent actionEvent) {
+        usuariProperty.set(null);
+        //noinspection DuplicateStringLiteralInspection
+        containerPanel.setContent(new Label("No content"));
+    }
+
+    public void showAbout(ActionEvent actionEvent) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("About Asseguradora");
+        alert.setHeaderText("About");
+        alert.setContentText("Proyecto M6 uf2 Asseguradora");
+        alert.showAndWait();
     }
 }
