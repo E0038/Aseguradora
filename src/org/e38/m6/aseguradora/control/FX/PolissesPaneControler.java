@@ -2,6 +2,7 @@ package org.e38.m6.aseguradora.control.FX;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,12 +11,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.text.Font;
 import org.e38.m6.aseguradora.control.FxControler;
 import org.e38.m6.aseguradora.model.Polissa;
 
 import java.net.URL;
-import java.util.*;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Created by sergi on 4/8/16.
@@ -25,29 +31,31 @@ import java.util.*;
  */
 public class PolissesPaneControler implements Initializable, PanelControler {
     @FXML
-    private TableColumn colID;
+    private TextField textPrima;
     @FXML
-    private TableColumn colNumPoli;
+    private TableColumn<Polissa, String> colID;
     @FXML
-    private TableColumn colClientID;
+    private TableColumn<Polissa, String> colNumPoli;
     @FXML
-    private TableColumn colVehicleID;
+    private TableColumn<Polissa, String> colClientID;
     @FXML
-    private TableColumn colDataInici;
+    private TableColumn<Polissa, String> colVehicleID;
     @FXML
-    private TableColumn colDataFi;
+    private TableColumn<Polissa, String> colDataInici;
     @FXML
-    private TableColumn colPrima;
+    private TableColumn<Polissa, String> colDataFi;
     @FXML
-    private TableColumn colTipus;
+    private TableColumn<Polissa, String> colPrima;
     @FXML
-    private TableColumn colCobertures;
+    private TableColumn<Polissa, String> colTipus;
     @FXML
-    private TableColumn colCheckRobatori;
+    private TableColumn<Polissa, List<Polissa.Cobertura>> colCobertures;
     @FXML
-    private TableColumn colCheckInicendi;
+    private TableColumn<Polissa, Boolean> colCheckRobatori;
     @FXML
-    private TableColumn colCheckVidres;
+    private TableColumn<Polissa, Boolean> colCheckInicendi;
+    @FXML
+    private TableColumn<Polissa, Boolean> colCheckVidres;
     @FXML
     private ListView<Boolean> listChecks;
     @FXML
@@ -82,6 +90,8 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     private ObservableList<Polissa> displayPolisas = FXCollections.observableArrayList();
     private ObservableList<Polissa.Cobertura> selectedCovertures = FXCollections.observableArrayList();
     private BooleanProperty hasSelectedIdx = new SimpleBooleanProperty(false);
+    private DateFormat dateFormater = DateFormat.getDateTimeInstance();
+    private BooleanProperty matchingProperty = new SimpleBooleanProperty(false);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -89,6 +99,14 @@ public class PolissesPaneControler implements Initializable, PanelControler {
     }
 
     private void configure() {
+        configureControls();
+
+        configureTable();// TODO: 4/18/16
+        configureBlindings();
+
+    }
+
+    private void configureControls() {
         comboTipus.setItems(FXCollections.observableArrayList(Polissa.TYPE.values()));
         comboTipus.getSelectionModel().select(0);
         listCovertures.setItems(FXCollections.observableArrayList(Polissa.Cobertura.values()));
@@ -107,15 +125,30 @@ public class PolissesPaneControler implements Initializable, PanelControler {
             return observable;
         }));
         selectedCovertures.addListener((ListChangeListener<Polissa.Cobertura>) c -> hasSelectedIdx.set(!selectedCovertures.isEmpty()));
-
-        configureTable();// TODO: 4/18/16
-        configureBlindings();
-
+        textPrima.textProperty().addListener((observable, oldValue, newValue) ->
+                matchingProperty.set(newValue.matches("[\\d]+"))
+        );
     }
 
     private void configureTable() {
-        tablePolisses.getColumns().clear();
 
+        colID.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getId().toString()));
+        colClientID.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPrenedor().getId().toString()));
+        colPrima.setCellValueFactory(param -> new SimpleStringProperty(String.valueOf(param.getValue().getPrima())));
+        colDataFi.setCellValueFactory(param -> new SimpleStringProperty(dateFormater.format(param.getValue().getDataFi().getTime())));
+        colDataInici.setCellValueFactory(param -> new SimpleStringProperty(dateFormater.format(param.getValue().getDataInici().getTime())));
+        colNumPoli.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getPolisaNum()));
+        colTipus.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getTipus().name()));
+        colVehicleID.setCellValueFactory(param -> new SimpleStringProperty(param.getValue().getVehicle().getId().toString()));
+
+        colCheckInicendi.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue().getCobertures().contains(Polissa.Cobertura.INCENDI)));
+        colCheckInicendi.setCellFactory(CheckBoxTableCell.forTableColumn(colCheckInicendi));
+
+        colCheckRobatori.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue().getCobertures().contains(Polissa.Cobertura.ROBATORI)));
+        colCheckRobatori.setCellFactory(CheckBoxTableCell.forTableColumn(colCheckRobatori));
+
+        colCheckVidres.setCellValueFactory(param -> new SimpleBooleanProperty(param.getValue().getCobertures().contains(Polissa.Cobertura.VIDRES)));
+        colCheckVidres.setCellFactory(CheckBoxTableCell.forTableColumn(colCheckVidres));
 
         tablePolisses.setItems(displayPolisas);
     }
@@ -127,6 +160,7 @@ public class PolissesPaneControler implements Initializable, PanelControler {
                 .or(datePickerFiPolissa.valueProperty().isNull())
                 .or(datePickerIniciPolissa.valueProperty().isNull())
                 .or(hasSelectedIdx.not())
+                .or(matchingProperty.not())
         );
         btnInsertPolissa.disableProperty().bind(txtNumPolissa.textProperty().isEmpty()
                 .or(txtNifPrenedor.textProperty().length().isNotEqualTo(9))
@@ -134,16 +168,11 @@ public class PolissesPaneControler implements Initializable, PanelControler {
                 .or(datePickerFiPolissa.valueProperty().isNull())
                 .or(datePickerIniciPolissa.valueProperty().isNull())
                 .or(hasSelectedIdx.not())
+                .or(matchingProperty.not())
         );
         btnCercarPolissaNif.disableProperty().bind(txtNifPrenedor.textProperty().length().isNotEqualTo(9));
         btnCercarPolissaMatr.disableProperty().bind(txtMatriculaPolissa.textProperty().isEmpty());
-
     }
-
-    private Polissa getInputInstance() {
-        return null;
-    }
-
 
     @Override
     public void eliminar(ActionEvent actionEvent) {
@@ -160,7 +189,6 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         if (datePickerIniciPolissa.getValue().isAfter(datePickerFiPolissa.getValue())) {
             fxControler.showError("La data d'inici ha de ser posterior a la data de fi");
         } else {
-
             Polissa polissa = createPolissaObject();
 
             if (fxControler.insert(polissa)) {
@@ -193,8 +221,6 @@ public class PolissesPaneControler implements Initializable, PanelControler {
         fi.set(datePickerFiPolissa.getValue().getYear(), datePickerFiPolissa.getValue().getMonthValue() + 1,
                 datePickerFiPolissa.getValue().getDayOfMonth());
 
-        List<Polissa.Cobertura> coberturaList = new ArrayList<>();
-        Collections.copy(coberturaList, selectedCovertures);
 
         polissa.setPolisaNum(txtNumPolissa.getText())
                 .setPrenedor(fxControler.findByClientNif(txtNifPrenedor.getText()))
@@ -202,8 +228,8 @@ public class PolissesPaneControler implements Initializable, PanelControler {
                 .setDataInici(inici)
                 .setDataFi(fi)
                 .setTipus(comboTipus.getValue())
-                //copy list
-                .setCobertures(coberturaList);
+                .setCobertures(new ArrayList<>(selectedCovertures))
+                .setPrima(Long.valueOf(textPrima.getText()));
         return polissa;
     }
 
@@ -248,5 +274,4 @@ public class PolissesPaneControler implements Initializable, PanelControler {
             }
         }
     }
-
 }

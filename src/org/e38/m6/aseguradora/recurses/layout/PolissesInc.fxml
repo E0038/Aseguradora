@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-            prefHeight="331.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="375.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.e38.m6.aseguradora.control.FX.PolissesPaneControler">
-    <ListView fx:id="listCovertures" layoutX="179.0" layoutY="209.0" prefHeight="68.0" prefWidth="200.0"/>
+    <ListView fx:id="listCovertures" layoutX="177.0" layoutY="253.0" prefHeight="68.0" prefWidth="200.0"/>
     <TextField fx:id="txtNumPolissa" layoutX="179.0" layoutY="15.0" prefWidth="200.0"/>
     <TextField id="txtNumPolissa" fx:id="txtNifPrenedor" layoutX="179.0" layoutY="44.0" prefWidth="200.0"/>
     <TextField id="txtNumPolissa" fx:id="txtMatriculaPolissa" layoutX="179.0" layoutY="75.0" prefWidth="200.0"/>
@@ -25,13 +25,13 @@
     <Label font="$x1" layoutX="31.0" layoutY="172.0" text="Tipus:"/>
     <DatePicker fx:id="datePickerIniciPolissa" layoutX="179.0" layoutY="110.0" prefHeight="27.0" prefWidth="200.0"/>
     <DatePicker fx:id="datePickerFiPolissa" layoutX="179.0" layoutY="143.0" prefHeight="25.0" prefWidth="200.0"/>
-    <Button fx:id="btnInsertPolissa" layoutX="32.0" layoutY="292.0" mnemonicParsing="false" onAction="#inserir"
+    <Button fx:id="btnInsertPolissa" layoutX="32.0" layoutY="333.0" mnemonicParsing="false" onAction="#inserir"
             prefHeight="25.0" prefWidth="125.0" text="Insertar"/>
     <ComboBox fx:id="comboTipus" layoutX="179.0" layoutY="173.0" prefHeight="25.0" prefWidth="200.0"/>
-    <Button fx:id="btnModificarPolissa" layoutX="179.0" layoutY="292.0" mnemonicParsing="false"
+    <Button fx:id="btnModificarPolissa" layoutX="179.0" layoutY="333.0" mnemonicParsing="false"
             onAction="#updatePolissa" prefHeight="25.0" prefWidth="125.0" text="Modificar"/>
     <VBox layoutX="391.0" layoutY="17.0" spacing="10.0">
-        <ScrollPane prefViewportHeight="236.0">
+        <ScrollPane prefHeight="238.0" prefViewportHeight="236.0" prefViewportWidth="340.0" prefWidth="206.0">
             <TableView fx:id="tablePolisses" layoutX="397.0" layoutY="17.0" prefHeight="236.0">
                 <columns>
                     <TableColumn fx:id="colID" prefWidth="75.0" text="identificador polisa"/>
@@ -52,7 +52,7 @@
                 </columns>
             </TableView>
         </ScrollPane>
-        <FlowPane alignment="TOP_CENTER" hgap="10.0" layoutX="391.0" layoutY="230.0" prefHeight="68.0"
+        <FlowPane alignment="TOP_CENTER" hgap="10.0" layoutX="391.0" layoutY="230.0" prefHeight="102.0"
                   prefWidth="305.0" vgap="5.0" AnchorPane.rightAnchor="4.0">
             <opaqueInsets>
                 <Insets/>
@@ -65,9 +65,15 @@
                     text="Cercar vigents"/>
         </FlowPane>
     </VBox>
-    <Label layoutX="32.0" layoutY="209.0" text="Cobertures:">
+    <Label layoutX="30.0" layoutY="253.0" text="Cobertures:">
         <font>
             <Font size="18.0"/>
         </font>
     </Label>
+    <Label layoutX="30.0" layoutY="210.0" text="Prima:">
+        <font>
+            <Font size="18.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="textPrima" layoutX="179.0" layoutY="208.0" prefHeight="25.0" prefWidth="200.0"/>
 </AnchorPane>

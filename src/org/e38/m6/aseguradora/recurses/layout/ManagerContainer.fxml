@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="root" prefHeight="450.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8"
+<VBox fx:id="root" prefHeight="480.0" prefWidth="720.0" xmlns="http://javafx.com/javafx/8"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.e38.m6.aseguradora.control.FxControler">
     <MenuBar>
         <Menu mnemonicParsing="false" text="Categorias">
@@ -27,5 +27,5 @@
             <ComboBox fx:id="comboSouce" prefWidth="150.0" visible="false" BorderPane.alignment="CENTER"/>
         </center>
     </BorderPane>
-    <ScrollPane fx:id="containerPanel" prefHeight="350.0"/>
+    <ScrollPane fx:id="containerPanel" prefHeight="380.0"/>
 </VBox>
