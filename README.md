@@ -1,3 +1,3 @@
 # Aseguradora
 
-JPA 2.0 Test project
+JPA 2.0  and javaFx Test project
